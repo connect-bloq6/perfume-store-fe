@@ -1,25 +1,27 @@
 import type { Metadata } from 'next';
-import { Playfair_Display, Raleway } from 'next/font/google';
+import { Darker_Grotesque, Montserrat } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 
-const playfair = Playfair_Display({
+const darkerGrotesque = Darker_Grotesque({
   subsets: ['latin'],
-  variable: '--font-playfair',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-darker-grotesque',
   display: 'swap',
 });
 
-const raleway = Raleway({
+const montserrat = Montserrat({
   subsets: ['latin'],
-  variable: '--font-raleway',
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-montserrat',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Essence | Luxury Perfume Boutique',
-  description: 'Discover exquisite fragrances crafted for the discerning soul. Premium perfumes, niche scents, and timeless elegance.',
-  keywords: ['perfume', 'fragrance', 'luxury', 'scent', 'cologne', 'eau de parfum'],
+  title: 'CALRA | Perfume Store Atlanta',
+  description: 'Crafted for timeless beauty. A collection of artisan perfumes and oils inspired by tradition, crafted with modern elegance.',
+  keywords: ['perfume', 'fragrance', 'oud', 'luxury', 'scent', 'atlanta', 'artisan'],
 };
 
 export default function RootLayout({
@@ -28,13 +30,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${raleway.variable}`}>
-      <body className="bg-noir-950 text-white font-body antialiased">
+    <html lang="en" className={`${darkerGrotesque.variable} ${montserrat.variable}`}>
+      <body className="bg-cream-200 text-charcoal-800 font-body antialiased">
         <Header />
-        <main className="min-h-screen">{children}</main>
+        <main>{children}</main>
         <Footer />
       </body>
     </html>
   );
 }
-

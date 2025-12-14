@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Flower2, Flask, Award, Globe } from 'lucide-react';
+import { Flower2, FlaskConical, Award, Globe } from 'lucide-react';
 
 const values = [
   {
@@ -10,7 +10,7 @@ const values = [
     description: 'We source the finest raw materials from ethical suppliers around the globe.',
   },
   {
-    icon: Flask,
+    icon: FlaskConical,
     title: 'Master Perfumers',
     description: 'Our fragrances are crafted by world-renowned noses with decades of experience.',
   },

@@ -4,10 +4,13 @@
 
 @layer base {
   :root {
-    --gold-primary: #d4a574;
-    --gold-secondary: #b8956a;
-    --noir-bg: #0d0d0d;
-    --noir-surface: #1a1a1a;
+    --cream-bg: #E2DACB;
+    --cream-light: #F5F1EA;
+    --sand-primary: #D5C7AF;
+    --brown-accent: #A8845E;
+    --forest-accent: #4D6B4D;
+    --teal-accent: #3D7373;
+    --charcoal-text: #2F2F2F;
   }
 
   html {
@@ -15,12 +18,13 @@
   }
 
   body {
-    background: linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 100%);
+    background-color: #E2DACB;
+    color: #2F2F2F;
   }
 
   ::selection {
-    background-color: var(--gold-primary);
-    color: #0d0d0d;
+    background-color: var(--brown-accent);
+    color: #FEFDFB;
   }
 }
 
@@ -30,21 +34,69 @@
   }
 
   .btn-primary {
-    @apply bg-gold-500 text-noir-950 px-6 py-3 font-medium tracking-wide
-           hover:bg-gold-400 transition-all duration-300 ease-out;
+    @apply px-8 py-3.5 font-medium tracking-wide rounded-full transition-all duration-300 ease-out text-sm;
+    background-color: #A8845E;
+    color: #FEFDFB;
+  }
+
+  .btn-primary:hover {
+    background-color: #8D6D4A;
   }
 
   .btn-secondary {
-    @apply border border-gold-500 text-gold-500 px-6 py-3 font-medium tracking-wide
-           hover:bg-gold-500 hover:text-noir-950 transition-all duration-300 ease-out;
+    @apply px-8 py-3 font-medium tracking-wide rounded-full transition-all duration-300 ease-out text-sm;
+    border: 2px solid #A8845E;
+    color: #A8845E;
   }
 
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600;
+  .btn-secondary:hover {
+    background-color: #A8845E;
+    color: #FEFDFB;
   }
 
-  .glass-effect {
-    @apply bg-noir-900/60 backdrop-blur-md border border-noir-700/50;
+  .btn-outline {
+    @apply px-6 py-2.5 font-medium tracking-wide rounded-full transition-all duration-300 ease-out text-sm;
+    border: 1px solid #CFCFCF;
+    color: #3F3F3F;
+  }
+
+  .btn-outline:hover {
+    border-color: #A8845E;
+    color: #A8845E;
+  }
+
+  .card-product {
+    @apply rounded-3xl overflow-hidden transition-all duration-300;
+    background-color: #F5F1EB;
+  }
+
+  .card-product:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    transform: translateY(-4px);
+  }
+
+  .card-elevated {
+    @apply rounded-3xl overflow-hidden;
+    background-color: #FEFDFB;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .section-padding {
+    @apply py-20 md:py-28;
+  }
+
+  .glass-light {
+    background-color: rgba(251, 248, 243, 0.8);
+    backdrop-filter: blur(12px);
+  }
+
+  .image-frame {
+    @apply rounded-3xl overflow-hidden;
+  }
+
+  .image-frame-lg {
+    border-radius: 2rem;
+    overflow: hidden;
   }
 }
 
@@ -64,5 +116,59 @@
   .animate-delay-500 {
     animation-delay: 500ms;
   }
+  .animate-delay-600 {
+    animation-delay: 600ms;
+  }
+  .animate-delay-700 {
+    animation-delay: 700ms;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
+/* Custom scrollbar for light theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #E2DACB;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D5C7AF;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C4B59B;
+}
+
+/* FAQ Accordion styles */
+.faq-item {
+  border-bottom: 1px solid #E0D5C3;
+}
+
+.faq-trigger {
+  @apply flex items-center justify-between w-full py-5 text-left font-medium transition-colors;
+  color: #2F2F2F;
+}
+
+.faq-trigger:hover {
+  color: #A8845E;
+}
+
+.faq-content {
+  @apply overflow-hidden transition-all duration-300;
+}
