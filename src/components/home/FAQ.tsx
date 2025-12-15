@@ -5,10 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus } from 'lucide-react';
 
 const faqCategories = [
-  { id: 'ordering', label: 'Order a Product' },
+  { id: 'getting-started', label: 'Getting Started' },
   { id: 'shipping', label: 'Shipping and Returns' },
   { id: 'fragrance', label: 'Fragrance Recommendations' },
-  { id: 'warranty', label: 'Warranty & Returns' },
+  { id: 'account', label: 'Account & Orders' },
   { id: 'gift', label: 'Gift Services' },
 ];
 
@@ -29,47 +29,64 @@ const faqs = [
     question: 'How long do perfumes typically last?',
     answer: 'Our Eau de Parfum formulations typically last 6-8 hours, while our Parfum concentrations can last 8-12 hours. Oud-based fragrances often have even longer lasting power.',
   },
-  {
-    question: 'Still have questions?',
-    answer: 'Contact our customer service team at hello@calra.com or visit our Atlanta store. We\'re here to help you find the perfect fragrance.',
-    isSpecial: true,
-  },
 ];
 
 export function FAQ() {
-  const [activeCategory, setActiveCategory] = useState('ordering');
+  const [activeCategory, setActiveCategory] = useState('getting-started');
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="section-padding bg-cream-100">
+    <section className="py-24 md:py-32">
       <div className="container-luxury">
-        <div className="grid lg:grid-cols-12 gap-12">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Left side - Title and categories */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-4"
+            className="lg:col-span-6"
           >
-            <h2 className="font-display text-4xl sm:text-5xl text-charcoal-800 mb-4">
+            {/* Title with Arial font as per specs: Arial, 48px, 400 weight */}
+            <h2 
+              className="mb-4"
+              style={{ 
+                fontFamily: 'Arial, sans-serif',
+                fontWeight: 400,
+                fontSize: '48px',
+                lineHeight: '1.2',
+                letterSpacing: '0px',
+                color: '#796040'
+              }}
+            >
               FAQs
             </h2>
-            <p className="text-charcoal-500 text-sm mb-8">
-              Everything you need to know about ingredients, shipping, and customer support.
+            <p 
+              className="mb-10 whitespace-nowrap"
+              style={{
+                fontFamily: 'Arial, sans-serif',
+                fontWeight: 400,
+                fontSize: '16px',
+                lineHeight: '24px',
+                letterSpacing: '0px',
+                color: '#525252'
+              }}
+            >
+              Everything you need to know about fragrances, shipping, and customer support.
             </p>
             
             {/* Category tabs */}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               {faqCategories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => setActiveCategory(category.id)}
-                  className={`px-4 py-2 text-sm rounded-full transition-all ${
-                    activeCategory === category.id
-                      ? 'bg-charcoal-800 text-cream-50'
-                      : 'bg-sand-200 text-charcoal-600 hover:bg-sand-300'
-                  }`}
+                  className="px-3 py-1.5 text-xs rounded-full transition-all duration-300 bg-transparent text-charcoal-700 hover:text-charcoal-800 whitespace-nowrap"
+                  style={{
+                    borderColor: '#C5B299',
+                    borderWidth: '1px',
+                    borderStyle: 'solid'
+                  }}
                 >
                   {category.label}
                 </button>
@@ -83,59 +100,78 @@ export function FAQ() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:col-span-8"
+            className="lg:col-span-6 lg:ml-[8%]"
           >
-            <div className="bg-cream-50 rounded-3xl p-6 sm:p-8">
+            <div className="space-y-3">
+              {/* FAQ Items */}
               {faqs.map((faq, index) => (
-                <div key={index} className={`faq-item ${index === faqs.length - 1 ? 'border-b-0' : ''}`}>
-                  {faq.isSpecial ? (
-                    // Special CTA item
-                    <div className="py-6">
-                      <h3 className="font-display text-xl text-charcoal-800 mb-2">
-                        {faq.question}
-                      </h3>
-                      <p className="text-charcoal-500 text-sm mb-4">
-                        Contact our friendly customer service team and find out more about everything on a single place in the most.
-                      </p>
-                      <button className="btn-outline text-sm">
-                        Contact Support
-                      </button>
-                    </div>
-                  ) : (
-                    // Regular FAQ item
-                    <>
-                      <button
-                        onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                        className="faq-trigger"
+                <motion.div 
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  className="overflow-hidden"
+                  style={{
+                    backgroundColor: '#F4ECDE',
+                    borderRadius: '16px',
+                    boxShadow: '0 1px 2px -1px rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1)'
+                  }}
+                >
+                  <button
+                    onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                    className="flex items-center justify-between w-full px-5 py-4 text-left transition-colors"
+                  >
+                    <span className="text-charcoal-800 font-medium text-sm pr-4">{faq.question}</span>
+                    <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center text-charcoal-600">
+                      {openIndex === index ? (
+                        <Minus size={18} strokeWidth={1.5} />
+                      ) : (
+                        <Plus size={18} strokeWidth={1.5} />
+                      )}
+                    </span>
+                  </button>
+                  <AnimatePresence>
+                    {openIndex === index && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="overflow-hidden"
                       >
-                        <span className="pr-8">{faq.question}</span>
-                        <span className="flex-shrink-0 w-8 h-8 rounded-full bg-sand-200 flex items-center justify-center">
-                          {openIndex === index ? (
-                            <Minus size={16} className="text-charcoal-600" />
-                          ) : (
-                            <Plus size={16} className="text-charcoal-600" />
-                          )}
-                        </span>
-                      </button>
-                      <AnimatePresence>
-                        {openIndex === index && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="faq-content"
-                          >
-                            <p className="pb-5 text-charcoal-500 text-sm leading-relaxed">
-                              {faq.answer}
-                            </p>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </>
-                  )}
-                </div>
+                        <p className="px-5 pb-4 text-charcoal-600 text-sm leading-relaxed">
+                          {faq.answer}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               ))}
+
+              {/* Still have questions? - Special CTA card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.5 }}
+                className="px-5 py-5 mt-4"
+                style={{
+                  backgroundColor: '#F4ECDE',
+                  borderRadius: '16px',
+                  boxShadow: '0 1px 2px -1px rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1)'
+                }}
+              >
+                <h3 className="text-charcoal-800 font-medium text-base mb-1.5">
+                  Still have questions?
+                </h3>
+                <p className="text-charcoal-600 text-sm mb-4 leading-relaxed">
+                  Contact our support team and we will make sure everything is clear and intuitive for you!
+                </p>
+                <button className="px-5 py-2.5 bg-[#A8845E] text-cream-50 text-sm font-medium rounded-full transition-all duration-300 hover:bg-[#8D6D4A]">
+                  Contact Support
+                </button>
+              </motion.div>
             </div>
           </motion.div>
         </div>
