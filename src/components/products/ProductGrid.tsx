@@ -2,25 +2,93 @@
 
 import { ProductCard } from './ProductCard';
 
-// Placeholder product data
+// Product data using available images
 const products = [
-  { id: '1', name: 'Midnight Rose', brand: 'Essence', price: 195, image: '/images/products/midnight-rose.jpg', slug: 'midnight-rose', isNew: true },
-  { id: '2', name: 'Ocean Breeze', brand: 'Essence', price: 165, image: '/images/products/ocean-breeze.jpg', slug: 'ocean-breeze' },
-  { id: '3', name: 'Golden Amber', brand: 'Essence', price: 225, image: '/images/products/golden-amber.jpg', slug: 'golden-amber' },
-  { id: '4', name: 'Velvet Noir', brand: 'Essence', price: 185, image: '/images/products/velvet-noir.jpg', slug: 'velvet-noir' },
-  { id: '5', name: 'Eternal Bloom', brand: 'Essence', price: 210, image: '/images/products/eternal-bloom.jpg', slug: 'eternal-bloom' },
-  { id: '6', name: 'Mystic Oud', brand: 'Essence', price: 295, image: '/images/products/mystic-oud.jpg', slug: 'mystic-oud' },
-  { id: '7', name: 'Fresh Citrus', brand: 'Essence', price: 145, image: '/images/products/fresh-citrus.jpg', slug: 'fresh-citrus' },
-  { id: '8', name: 'Sandalwood Dreams', brand: 'Essence', price: 175, image: '/images/products/sandalwood.jpg', slug: 'sandalwood-dreams' },
+  { 
+    id: '1', 
+    name: 'Signature Collection', 
+    brand: 'Extrait De Parfum', 
+    price: 295, 
+    image: '/images/Landing Page/Background/Main.png', 
+    slug: 'signature-collection', 
+    isNew: true,
+    category: 'For Her'
+  },
+  { 
+    id: '2', 
+    name: 'Desert Rose Oud', 
+    brand: 'Eau De Parfum', 
+    price: 245, 
+    image: '/images/Landing Page/Background/Desert Rose.png', 
+    slug: 'desert-rose-oud',
+    isBestseller: true,
+    category: 'Unisex'
+  },
+  { 
+    id: '3', 
+    name: 'Mysterious Night', 
+    brand: 'Parfum', 
+    price: 325, 
+    image: '/images/Landing Page/Background/Mysterious.png', 
+    slug: 'mysterious-night',
+    category: 'For Him'
+  },
+  { 
+    id: '4', 
+    name: 'Black Phoenix', 
+    brand: 'Extrait De Parfum', 
+    price: 385, 
+    image: '/images/Landing Page/Background/Black_Phoenix.png', 
+    slug: 'black-phoenix',
+    isNew: true,
+    category: 'Unisex'
+  },
+  { 
+    id: '5', 
+    name: 'Azure Dreams', 
+    brand: 'Eau De Parfum', 
+    price: 195, 
+    image: '/images/Landing Page/Background/Blue.png', 
+    slug: 'azure-dreams',
+    category: 'For Her'
+  },
+  { 
+    id: '6', 
+    name: 'Luxe Display', 
+    brand: 'Parfum', 
+    price: 275, 
+    image: '/images/Landing Page/Background/Shelf.png', 
+    slug: 'luxe-display',
+    isBestseller: true,
+    category: 'For Her'
+  },
+  { 
+    id: '7', 
+    name: 'Imperial Gold', 
+    brand: 'Extrait De Parfum', 
+    price: 350, 
+    image: '/images/Landing Page/Background/Single.png', 
+    slug: 'imperial-gold',
+    category: 'Unisex'
+  },
+  { 
+    id: '8', 
+    name: 'Velvet Oud Collection', 
+    brand: 'Gift Set', 
+    price: 450, 
+    image: '/images/Landing Page/Background/Three.png', 
+    slug: 'velvet-oud-collection',
+    isNew: true,
+    category: 'Gift Sets'
+  },
 ];
 
 export function ProductGrid() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
   );
 }
-

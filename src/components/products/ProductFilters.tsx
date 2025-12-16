@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 interface FilterSection {
   title: string;
@@ -16,6 +15,7 @@ const filterSections: FilterSection[] = [
       { value: 'women', label: 'For Her', count: 45 },
       { value: 'men', label: 'For Him', count: 38 },
       { value: 'unisex', label: 'Unisex', count: 22 },
+      { value: 'gifts', label: 'Gift Sets', count: 12 },
     ],
   },
   {
@@ -24,8 +24,8 @@ const filterSections: FilterSection[] = [
       { value: 'floral', label: 'Floral', count: 28 },
       { value: 'oriental', label: 'Oriental', count: 19 },
       { value: 'woody', label: 'Woody', count: 24 },
+      { value: 'oud', label: 'Oud', count: 15 },
       { value: 'fresh', label: 'Fresh', count: 18 },
-      { value: 'citrus', label: 'Citrus', count: 15 },
     ],
   },
   {
@@ -33,8 +33,7 @@ const filterSections: FilterSection[] = [
     options: [
       { value: 'parfum', label: 'Parfum', count: 12 },
       { value: 'edp', label: 'Eau de Parfum', count: 45 },
-      { value: 'edt', label: 'Eau de Toilette', count: 32 },
-      { value: 'cologne', label: 'Cologne', count: 8 },
+      { value: 'extrait', label: 'Extrait De Parfum', count: 20 },
     ],
   },
   {
@@ -48,10 +47,10 @@ const filterSections: FilterSection[] = [
   {
     title: 'Price Range',
     options: [
-      { value: '0-100', label: 'Under $100', count: 15 },
-      { value: '100-200', label: '$100 - $200', count: 42 },
-      { value: '200-300', label: '$200 - $300', count: 28 },
-      { value: '300+', label: '$300+', count: 12 },
+      { value: '0-150', label: 'Under $150', count: 15 },
+      { value: '150-250', label: '$150 - $250', count: 42 },
+      { value: '250-350', label: '$250 - $350', count: 28 },
+      { value: '350+', label: '$350+', count: 12 },
     ],
   },
 ];
@@ -78,28 +77,42 @@ export function ProductFilters() {
     });
   };
 
+  const hasActiveFilters = Object.values(selectedFilters).some(arr => arr.length > 0);
+
   return (
-    <aside className="space-y-6">
-      <h3 className="font-display text-lg text-gold-500">Filters</h3>
+    <aside className="space-y-1">
+      <h3 
+        className="font-display text-lg font-semibold mb-6"
+        style={{ color: '#65553F' }}
+      >
+        Filters
+      </h3>
 
       {filterSections.map((section) => (
-        <div key={section.title} className="border-b border-noir-800 pb-4">
+        <div 
+          key={section.title} 
+          className="border-b pb-4 mb-4"
+          style={{ borderColor: '#E0D5C3' }}
+        >
           <button
             onClick={() => toggleSection(section.title)}
             className="w-full flex items-center justify-between py-2 text-left"
           >
-            <span className="text-sm text-white">{section.title}</span>
+            <span 
+              className="text-sm font-medium"
+              style={{ color: '#3F3F3F' }}
+            >
+              {section.title}
+            </span>
             <ChevronDown
               size={16}
-              className={cn(
-                'text-noir-400 transition-transform duration-200',
-                openSections.includes(section.title) && 'rotate-180'
-              )}
+              className={`transition-transform duration-200 ${openSections.includes(section.title) ? 'rotate-180' : ''}`}
+              style={{ color: '#8B8B8B' }}
             />
           </button>
 
           {openSections.includes(section.title) && (
-            <div className="mt-2 space-y-2">
+            <div className="mt-3 space-y-3">
               {section.options.map((option) => (
                 <label
                   key={option.value}
@@ -109,13 +122,23 @@ export function ProductFilters() {
                     type="checkbox"
                     checked={selectedFilters[section.title]?.includes(option.value) || false}
                     onChange={() => toggleFilter(section.title, option.value)}
-                    className="w-4 h-4 bg-noir-900 border border-noir-600 checked:bg-gold-500 checked:border-gold-500 focus:ring-0 focus:ring-offset-0"
+                    className="w-4 h-4 rounded border-2 appearance-none cursor-pointer transition-all"
+                    style={{ 
+                      borderColor: selectedFilters[section.title]?.includes(option.value) ? '#A8845E' : '#C5B299',
+                      backgroundColor: selectedFilters[section.title]?.includes(option.value) ? '#A8845E' : 'transparent'
+                    }}
                   />
-                  <span className="text-sm text-noir-300 group-hover:text-white transition-colors">
+                  <span 
+                    className="text-sm transition-colors group-hover:opacity-70"
+                    style={{ color: '#6B6B6B' }}
+                  >
                     {option.label}
                   </span>
                   {option.count !== undefined && (
-                    <span className="text-xs text-noir-500 ml-auto">
+                    <span 
+                      className="text-xs ml-auto"
+                      style={{ color: '#ABABAB' }}
+                    >
                       ({option.count})
                     </span>
                   )}
@@ -126,10 +149,18 @@ export function ProductFilters() {
         </div>
       ))}
 
-      <button className="w-full btn-secondary text-sm">
-        Clear All Filters
-      </button>
+      {hasActiveFilters && (
+        <button 
+          onClick={() => setSelectedFilters({})}
+          className="w-full py-2.5 text-sm font-medium rounded-full transition-all duration-300 mt-4"
+          style={{ 
+            border: '1px solid #C5B299',
+            color: '#65553F'
+          }}
+        >
+          Clear All Filters
+        </button>
+      )}
     </aside>
   );
 }
-

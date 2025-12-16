@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Heart, ShoppingBag } from 'lucide-react';
-import { Badge } from '@/components/ui/Badge';
 import { formatPrice } from '@/lib/utils';
 
 interface Product {
@@ -16,6 +15,7 @@ interface Product {
   isNew?: boolean;
   isBestseller?: boolean;
   salePrice?: number;
+  category?: string;
 }
 
 interface ProductCardProps {
@@ -26,62 +26,104 @@ export function ProductCard({ product }: ProductCardProps) {
   const hasDiscount = product.salePrice && product.salePrice < product.price;
 
   return (
-    <div className="group relative">
+    <div className="group">
       {/* Image Container */}
-      <Link href={`/products/${product.slug}`} className="block relative aspect-[3/4] overflow-hidden bg-noir-900">
+      <Link 
+        href={`/products/${product.slug}`} 
+        className="block relative aspect-[3/4] overflow-hidden mb-4"
+        style={{ borderRadius: '20px', backgroundColor: '#F5F1EA' }}
+      >
         <Image
           src={product.image}
           alt={product.name}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-700"
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
-          {product.isNew && <Badge variant="new">New</Badge>}
-          {hasDiscount && <Badge variant="sale">Sale</Badge>}
-          {product.isBestseller && <Badge variant="default">Bestseller</Badge>}
+          {product.isNew && (
+            <span 
+              className="px-3 py-1 text-xs font-medium rounded-full"
+              style={{ backgroundColor: '#A8845E', color: '#FEFDFB' }}
+            >
+              New
+            </span>
+          )}
+          {hasDiscount && (
+            <span 
+              className="px-3 py-1 text-xs font-medium rounded-full"
+              style={{ backgroundColor: '#C75050', color: '#FEFDFB' }}
+            >
+              Sale
+            </span>
+          )}
+          {product.isBestseller && (
+            <span 
+              className="px-3 py-1 text-xs font-medium rounded-full"
+              style={{ backgroundColor: '#65553F', color: '#FEFDFB' }}
+            >
+              Bestseller
+            </span>
+          )}
         </div>
 
         {/* Quick Actions */}
         <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <button
-            className="w-10 h-10 bg-noir-950/80 backdrop-blur-sm flex items-center justify-center hover:bg-gold-500 hover:text-noir-950 transition-colors"
+            className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+            style={{ backgroundColor: '#FEFDFB', color: '#65553F' }}
             aria-label="Add to wishlist"
           >
-            <Heart size={18} />
+            <Heart size={16} />
           </button>
           <button
-            className="w-10 h-10 bg-noir-950/80 backdrop-blur-sm flex items-center justify-center hover:bg-gold-500 hover:text-noir-950 transition-colors"
+            className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+            style={{ backgroundColor: '#A8845E', color: '#FEFDFB' }}
             aria-label="Add to cart"
           >
-            <ShoppingBag size={18} />
+            <ShoppingBag size={16} />
           </button>
         </div>
       </Link>
 
       {/* Product Info */}
-      <div className="mt-4">
-        <p className="text-noir-400 text-xs tracking-wide uppercase mb-1">
+      <div className="px-1">
+        <p 
+          className="text-xs tracking-wide uppercase mb-1"
+          style={{ color: '#8B8B8B' }}
+        >
           {product.brand}
         </p>
         <Link href={`/products/${product.slug}`}>
-          <h3 className="font-display text-lg text-white hover:text-gold-500 transition-colors">
+          <h3 
+            className="font-display text-base font-medium transition-colors hover:opacity-70"
+            style={{ color: '#3F3F3F' }}
+          >
             {product.name}
           </h3>
         </Link>
         <div className="flex items-center gap-2 mt-2">
           {hasDiscount ? (
             <>
-              <span className="text-gold-500 font-medium">
+              <span 
+                className="font-medium"
+                style={{ color: '#A8845E' }}
+              >
                 {formatPrice(product.salePrice!)}
               </span>
-              <span className="text-noir-500 text-sm line-through">
+              <span 
+                className="text-sm line-through"
+                style={{ color: '#ABABAB' }}
+              >
                 {formatPrice(product.price)}
               </span>
             </>
           ) : (
-            <span className="text-gold-500 font-medium">
+            <span 
+              className="font-medium"
+              style={{ color: '#A8845E' }}
+            >
               {formatPrice(product.price)}
             </span>
           )}
@@ -90,4 +132,3 @@ export function ProductCard({ product }: ProductCardProps) {
     </div>
   );
 }
-
