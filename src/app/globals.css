@@ -172,3 +172,14 @@
 .faq-content {
   @apply overflow-hidden transition-all duration-300;
 }
+
+/* Hero CRAFTED text - responsive color */
+.crafted-text {
+  color: #796040;
+}
+
+@media (min-width: 1024px) {
+  .crafted-text {
+    color: #DBD0BA;
+  }
+}

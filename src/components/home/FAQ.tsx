@@ -36,9 +36,10 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-24 md:py-32">
+    <section className="py-12 md:py-12 lg:py-32">
       <div className="container-luxury">
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
+        {/* Single column layout for mobile & tablet, two columns for desktop */}
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-16">
           {/* Left side - Title and categories */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -49,11 +50,10 @@ export function FAQ() {
           >
             {/* Title with Arial font as per specs: Arial, 48px, 400 weight */}
             <h2 
-              className="mb-4"
+              className="mb-3 md:mb-4 text-[36px] md:text-[40px] lg:text-[48px]"
               style={{ 
                 fontFamily: 'Arial, sans-serif',
                 fontWeight: 400,
-                fontSize: '48px',
                 lineHeight: '1.2',
                 letterSpacing: '0px',
                 color: '#796040'
@@ -62,12 +62,11 @@ export function FAQ() {
               FAQs
             </h2>
             <p 
-              className="mb-10 whitespace-nowrap"
+              className="mb-6 md:mb-6 lg:mb-10 text-[14px] md:text-[15px] lg:text-[16px]"
               style={{
                 fontFamily: 'Arial, sans-serif',
                 fontWeight: 400,
-                fontSize: '16px',
-                lineHeight: '24px',
+                lineHeight: '1.5',
                 letterSpacing: '0px',
                 color: '#525252'
               }}
@@ -76,12 +75,12 @@ export function FAQ() {
             </p>
             
             {/* Category tabs */}
-            <div className="flex flex-wrap gap-2.5">
+            <div className="flex flex-wrap gap-2 md:gap-2.5 mb-8 md:mb-10 lg:mb-0">
               {faqCategories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => setActiveCategory(category.id)}
-                  className="px-3 py-1.5 text-xs rounded-full transition-all duration-300 bg-transparent text-charcoal-700 hover:text-charcoal-800 whitespace-nowrap"
+                  className="px-2.5 md:px-3 py-1 md:py-1.5 text-[11px] md:text-xs rounded-full transition-all duration-300 bg-transparent text-charcoal-700 hover:text-charcoal-800 whitespace-nowrap"
                   style={{
                     borderColor: '#C5B299',
                     borderWidth: '1px',
@@ -102,7 +101,7 @@ export function FAQ() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-6 lg:ml-[8%]"
           >
-            <div className="space-y-3">
+            <div className="space-y-0 lg:space-y-3">
               {/* FAQ Items */}
               {faqs.map((faq, index) => (
                 <motion.div 
@@ -111,16 +110,11 @@ export function FAQ() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="overflow-hidden"
-                  style={{
-                    backgroundColor: '#F4ECDE',
-                    borderRadius: '16px',
-                    boxShadow: '0 1px 2px -1px rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1)'
-                  }}
+                  className="overflow-hidden bg-transparent lg:bg-[#F4ECDE] rounded-none lg:rounded-2xl shadow-none lg:shadow-sm border-b border-[#D5C7AF] lg:border-0"
                 >
                   <button
                     onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                    className="flex items-center justify-between w-full px-5 py-4 text-left transition-colors"
+                    className="flex items-center justify-between w-full px-0 lg:px-5 py-4 text-left transition-colors"
                   >
                     <span className="text-charcoal-800 font-medium text-sm pr-4">{faq.question}</span>
                     <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center text-charcoal-600">
@@ -140,7 +134,7 @@ export function FAQ() {
                         transition={{ duration: 0.3, ease: 'easeInOut' }}
                         className="overflow-hidden"
                       >
-                        <p className="px-5 pb-4 text-charcoal-600 text-sm leading-relaxed">
+                        <p className="px-0 lg:px-5 pb-4 text-charcoal-600 text-sm leading-relaxed">
                           {faq.answer}
                         </p>
                       </motion.div>
@@ -155,12 +149,7 @@ export function FAQ() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.5 }}
-                className="px-5 py-5 mt-4"
-                style={{
-                  backgroundColor: '#F4ECDE',
-                  borderRadius: '16px',
-                  boxShadow: '0 1px 2px -1px rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1)'
-                }}
+                className="px-0 lg:px-5 py-5 mt-4 bg-transparent lg:bg-[#F4ECDE] rounded-none lg:rounded-2xl shadow-none lg:shadow-sm"
               >
                 <h3 className="text-charcoal-800 font-medium text-base mb-1.5">
                   Still have questions?
@@ -175,6 +164,9 @@ export function FAQ() {
             </div>
           </motion.div>
         </div>
+
+        {/* Divider line - mobile and tablet only */}
+        <div className="lg:hidden mt-8 md:mt-10 border-t border-[#C5B299]" />
       </div>
     </section>
   );

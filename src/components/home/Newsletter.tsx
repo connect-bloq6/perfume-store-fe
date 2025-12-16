@@ -9,7 +9,7 @@ export function Newsletter() {
   };
 
   return (
-    <section className="pt-30 md:pt-36 pb-8 md:pb-10">
+    <section className="pt-8 md:pt-10 lg:pt-36 pb-6 md:pb-8 lg:pb-10">
       <div className="container-luxury">
         {/* Newsletter signup with Back to Top */}
         <motion.div
@@ -22,17 +22,17 @@ export function Newsletter() {
           {/* Left side - Title and Subscribe */}
           <div>
             <h2 
-              className="font-display text-2xl sm:text-3xl mb-2"
+              className="font-display text-xl md:text-2xl lg:text-3xl mb-1.5 md:mb-2"
               style={{ color: '#65553F', fontWeight: 700 }}
             >
               Perfume Store Atlanta
             </h2>
-            <p className="text-charcoal-500 text-xs mb-6">
+            <p className="text-charcoal-500 text-[11px] md:text-xs mb-4 md:mb-5 lg:mb-6">
               Stay in the loop with our latest listings
             </p>
             
             <button
-              className="px-5 py-2 rounded-full flex items-center gap-2 text-sm font-medium transition-all duration-300 hover:opacity-80"
+              className="px-4 md:px-5 py-1.5 md:py-2 rounded-full flex items-center gap-2 text-[13px] md:text-sm font-medium transition-all duration-300 hover:opacity-80"
               style={{ 
                 backgroundColor: 'transparent',
                 border: '1px solid #65553F',
@@ -40,14 +40,14 @@ export function Newsletter() {
               }}
             >
               Subscribe
-              <Mail size={14} />
+              <Mail className="w-3 h-3 md:w-3.5 md:h-3.5" />
             </button>
           </div>
 
           {/* Right side - Back to Top */}
           <button
             onClick={scrollToTop}
-            className="mt-8 md:mt-0 text-sm font-medium transition-colors hover:opacity-70"
+            className="mt-6 md:mt-0 text-[13px] md:text-sm font-medium transition-colors hover:opacity-70"
             style={{ color: '#4A3D2A' }}
           >
             Back To Top

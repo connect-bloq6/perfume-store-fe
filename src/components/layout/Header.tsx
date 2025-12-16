@@ -45,10 +45,10 @@ export function Header() {
             />
           </Link>
 
-          {/* Desktop Navigation - Pill Shape */}
-          <nav className="hidden lg:block">
+          {/* Desktop/Tablet Navigation - Pill Shape */}
+          <nav className="hidden md:block">
             <div 
-              className="flex items-center rounded-[40px] px-[11px] py-[11px] backdrop-blur-xl"
+              className="flex items-center rounded-[40px] px-2 md:px-[9px] lg:px-[11px] py-2 md:py-[9px] lg:py-[11px] backdrop-blur-xl"
               style={{
                 background: 'rgba(255, 255, 255, 0.15)',
                 boxShadow: '0 4px 24px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
@@ -58,14 +58,14 @@ export function Header() {
                 <div key={link.href + link.label} className="flex items-center">
                   <Link 
                     href={link.href} 
-                    className="px-[18px] py-0.5 text-[13px] font-medium tracking-wide transition-all duration-300 hover:opacity-70"
+                    className="px-2.5 md:px-3 lg:px-[18px] py-0.5 text-[11px] md:text-[12px] lg:text-[13px] font-medium tracking-wide transition-all duration-300 hover:opacity-70"
                     style={{ color: '#3D4A5C' }}
                   >
                     {link.label}
                   </Link>
                   {index < navLinks.length - 1 && (
                     <div 
-                      className="h-[13px] w-px mx-0.5"
+                      className="h-[11px] md:h-[12px] lg:h-[13px] w-px mx-0.5"
                       style={{ backgroundColor: 'rgba(61, 74, 92, 0.2)' }}
                     />
                   )}
@@ -105,7 +105,7 @@ export function Header() {
             
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-2.5 hover:bg-sand-200/50 rounded-full transition-colors text-charcoal-600"
+              className="md:hidden p-2.5 hover:bg-sand-200/50 rounded-full transition-colors text-charcoal-600"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -116,7 +116,7 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden mt-4 mx-auto max-w-xs">
+          <div className="md:hidden mt-4 mx-auto max-w-xs">
             <nav 
               className="rounded-2xl p-3 animate-fade-in backdrop-blur-xl"
               style={{
