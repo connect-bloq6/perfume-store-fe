@@ -1,59 +1,92 @@
 'use client';
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 export function OurStory() {
   return (
-    <section className="py-24">
+    <section className="py-16 md:py-24">
       <div className="container-luxury">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <span className="text-gold-500 text-sm tracking-[0.3em] uppercase mb-4 block">
-              Since 1985
-            </span>
-            <h2 className="font-display text-4xl text-white mb-6">
-              A Legacy of Excellence
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          {/* Left - Text Content */}
+          <div className="lg:pt-4">
+            {/* Our Story Badge */}
+            <div 
+              className="inline-block px-6 py-1 rounded-full mb-6"
+              style={{ backgroundColor: '#F5EBD9' }}
+            >
+              <span 
+                className="text-xs font-medium"
+                style={{ color: '#A8845E' }}
+              >
+                Our Story
+              </span>
+            </div>
+
+            {/* Heading */}
+            <h2 
+              className="font-playfair mb-6"
+              style={{
+                fontWeight: 400,
+                fontSize: '42px',
+                lineHeight: '52px',
+                color: '#171717'
+              }}
+            >
+              A Journey of Passion
+              <br />
+              & Excellence
             </h2>
-            <div className="space-y-4 text-noir-300">
-              <p>
-                What began as a small atelier in the heart of Paris has blossomed 
-                into an internationally celebrated perfume house. Our founder&apos;s 
-                vision was simple yet profound: to create fragrances that tell stories.
+
+            {/* Description Paragraphs */}
+            <div className="space-y-5 mb-8" style={{ color: '#6B6B6B' }}>
+              <p className="text-base leading-relaxed">
+                Founded in the heart of Atlanta, our journey began with a simple 
+                dream: to create fragrances that transcend the ordinary. What 
+                started as a small boutique has blossomed into a globally 
+                recognized brand, celebrated for our commitment to quality and 
+                innovation.
               </p>
-              <p>
-                Today, we continue that legacy with the same passion and dedication, 
-                sourcing the finest ingredients from around the world and working 
-                with master perfumers who share our commitment to excellence.
-              </p>
-              <p>
-                Each Essence fragrance is a testament to our belief that perfume 
-                is more than a luxury—it&apos;s an art form that has the power to 
-                evoke memories, inspire emotions, and define moments.
+              <p className="text-base leading-relaxed">
+                Each fragrance in our collection is a masterpiece, meticulously 
+                crafted by our team of expert perfumers who travel the world in 
+                search of the finest ingredients. From the rose gardens of Bulgaria 
+                to the vanilla plantations of Madagascar, we source only the best.
               </p>
             </div>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="relative aspect-[4/5]"
-          >
-            <Image
-              src="/images/about/story.jpg"
-              alt="Our story"
-              fill
-              className="object-cover"
-            />
-          </motion.div>
+            {/* Explore Button */}
+            <Link 
+              href="/products"
+              className="inline-block px-8 py-3.5 rounded-full text-sm font-medium transition-all duration-300 hover:opacity-90"
+              style={{ 
+                backgroundColor: '#C4A77D',
+                color: '#FFFFFF'
+              }}
+            >
+              Explore Our Collection
+            </Link>
+          </div>
+
+          {/* Right - Image */}
+          <div className="relative">
+            <div className="relative max-w-md lg:max-w-lg mx-auto">
+              <div 
+                className="relative aspect-[4/5] overflow-hidden"
+                style={{ borderRadius: '30px', backgroundColor: '#F5F1EA' }}
+              >
+                <Image
+                  src="/images/Landing Page/Background/Single.png"
+                  alt="Imperial Gold Elixir Perfume"
+                  fill
+                  className="object-cover"
+                  quality={100}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
-

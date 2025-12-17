@@ -99,6 +99,7 @@ const config: Config = {
         display: ['var(--font-darker-grotesque)', 'sans-serif'],
         body: ['var(--font-montserrat)', 'sans-serif'],
         inter: ['var(--font-inter)', 'sans-serif'],
+        playfair: ['var(--font-playfair)', 'serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out forwards',

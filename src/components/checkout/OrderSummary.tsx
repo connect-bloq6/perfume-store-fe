@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { formatPrice } from '@/lib/utils';
 
 const orderItems = [
-  { id: '1', name: 'Midnight Rose', size: '50ml', price: 175, quantity: 1, image: '/images/products/midnight-rose.jpg' },
-  { id: '2', name: 'Golden Amber', size: '100ml', price: 250, quantity: 2, image: '/images/products/golden-amber.jpg' },
+  { id: '1', name: 'Desert Rose', size: '50ml', price: 175, quantity: 1, image: '/images/Landing Page/Background/Desert Rose.png' },
+  { id: '2', name: 'Mysterious', size: '100ml', price: 250, quantity: 2, image: '/images/Landing Page/Background/Mysterious.png' },
 ];
 
 export function OrderSummary() {
@@ -23,7 +23,7 @@ export function OrderSummary() {
         {orderItems.map((item) => (
           <div key={item.id} className="flex gap-4">
             <div className="relative w-16 h-16 bg-noir-800 flex-shrink-0">
-              <Image src={item.image} alt={item.name} fill className="object-cover" />
+              <Image src={item.image} alt={item.name} fill quality={100} sizes="64px" className="object-cover" />
               <span className="absolute -top-2 -right-2 w-5 h-5 bg-gold-500 text-noir-950 text-xs flex items-center justify-center">
                 {item.quantity}
               </span>

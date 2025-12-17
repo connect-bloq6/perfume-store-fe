@@ -5,12 +5,48 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 const collections = [
-  { id: 'women', name: 'For Her', count: 45, image: '/images/collections/women.jpg' },
-  { id: 'men', name: 'For Him', count: 38, image: '/images/collections/men.jpg' },
-  { id: 'unisex', name: 'Unisex', count: 22, image: '/images/collections/unisex.jpg' },
-  { id: 'new-arrivals', name: 'New Arrivals', count: 12, image: '/images/collections/new.jpg' },
-  { id: 'bestsellers', name: 'Bestsellers', count: 15, image: '/images/collections/bestsellers.jpg' },
-  { id: 'gift-sets', name: 'Gift Sets', count: 8, image: '/images/collections/gifts.jpg' },
+  { 
+    id: 'floral', 
+    name: 'Floral', 
+    description: 'Delicate & romantic scents',
+    count: 12, 
+    image: '/images/Landing Page/Background/Desert Rose.png' 
+  },
+  { 
+    id: 'woody', 
+    name: 'Woody', 
+    description: 'Bold & sophisticated fragrances',
+    count: 8, 
+    image: '/images/Landing Page/Background/Mysterious.png' 
+  },
+  { 
+    id: 'oriental', 
+    name: 'Oriental', 
+    description: 'Rich & exotic blends',
+    count: 10, 
+    image: '/images/Landing Page/Background/Blue.png' 
+  },
+  { 
+    id: 'gourmand', 
+    name: 'Gourmand', 
+    description: 'Sweet & indulgent notes',
+    count: 6, 
+    image: '/images/Landing Page/Background/Subtract2.png' 
+  },
+  { 
+    id: 'luxury', 
+    name: 'Luxury', 
+    description: 'Premium exclusive collection',
+    count: 4, 
+    image: '/images/Landing Page/Background/Single.png' 
+  },
+  { 
+    id: 'collection', 
+    name: 'Gift Sets', 
+    description: 'Perfect for gifting',
+    count: 3, 
+    image: '/images/Landing Page/Background/Three.png' 
+  },
 ];
 
 export function CollectionGrid() {
@@ -26,23 +62,42 @@ export function CollectionGrid() {
         >
           <Link
             href={`/collections/${collection.id}`}
-            className="group relative block aspect-[4/3] overflow-hidden"
+            className="group block rounded-2xl overflow-hidden transition-shadow hover:shadow-lg"
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #F0F0F0' }}
           >
-            <div className="absolute inset-0 bg-noir-950">
+            {/* Image */}
+            <div 
+              className="relative aspect-[4/3] overflow-hidden"
+              style={{ backgroundColor: '#FAF8F5' }}
+            >
               <Image
                 src={collection.image}
                 alt={collection.name}
                 fill
-                className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700"
+                quality={100}
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-contain p-6 group-hover:scale-105 transition-transform duration-500"
               />
             </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-noir-950 via-noir-950/30 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-6">
-              <h3 className="font-display text-2xl text-white mb-1">
-                {collection.name}
-              </h3>
-              <p className="text-noir-400 text-sm">
-                {collection.count} fragrances
+            
+            {/* Content */}
+            <div className="p-5">
+              <div className="flex items-center justify-between mb-2">
+                <h3 
+                  className="font-medium"
+                  style={{ color: '#171717', fontSize: '18px' }}
+                >
+                  {collection.name}
+                </h3>
+                <span 
+                  className="text-xs px-2 py-1 rounded-full"
+                  style={{ backgroundColor: '#F5F1EA', color: '#6B6B6B' }}
+                >
+                  {collection.count} items
+                </span>
+              </div>
+              <p className="text-sm" style={{ color: '#6B6B6B' }}>
+                {collection.description}
               </p>
             </div>
           </Link>
@@ -51,4 +106,3 @@ export function CollectionGrid() {
     </div>
   );
 }
-

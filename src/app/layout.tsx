@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
-import { Darker_Grotesque, Montserrat, Inter } from 'next/font/google';
+import { Darker_Grotesque, Montserrat, Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { PageLoader } from '@/components/ui/PageLoader';
+import { CustomCursor } from '@/components/ui/CustomCursor';
+import { MagicEffectsProvider } from '@/components/ui/MagicEffects';
 
 const darkerGrotesque = Darker_Grotesque({
   subsets: ['latin'],
@@ -25,6 +28,13 @@ const inter = Inter({
   display: 'swap',
 });
 
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-playfair',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
   title: 'CALRA | Perfume Store Atlanta',
   description: 'Crafted for timeless beauty. A collection of artisan perfumes and oils inspired by tradition, crafted with modern elegance.',
@@ -37,11 +47,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${darkerGrotesque.variable} ${montserrat.variable} ${inter.variable}`}>
+    <html lang="en" className={`${darkerGrotesque.variable} ${montserrat.variable} ${inter.variable} ${playfairDisplay.variable}`}>
       <body className="bg-cream-200 text-charcoal-800 font-body antialiased">
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <MagicEffectsProvider>
+          <PageLoader />
+          <CustomCursor />
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </MagicEffectsProvider>
       </body>
     </html>
   );

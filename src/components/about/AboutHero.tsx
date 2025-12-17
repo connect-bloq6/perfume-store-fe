@@ -1,32 +1,58 @@
 'use client';
 
-import { motion } from 'framer-motion';
-
 export function AboutHero() {
   return (
-    <section className="relative min-h-[60vh] flex items-center bg-noir-950">
-      <div className="absolute inset-0 bg-[url('/images/about/hero.jpg')] bg-cover bg-center opacity-30" />
-      <div className="absolute inset-0 bg-gradient-to-b from-noir-950 via-transparent to-noir-950" />
+    <section className="py-16 md:py-24">
+      <div className="container-luxury">
+        {/* Since 2010 Badge */}
+        <div className="flex justify-center">
+          <div 
+            className="inline-block px-6 py-2 rounded-full -mb-5 relative z-10"
+            style={{ backgroundColor: '#F5EBD9' }}
+          >
+            <span 
+              className="text-sm font-medium"
+              style={{ color: '#A8845E' }}
+            >
+              Since 2010
+            </span>
+          </div>
+        </div>
 
-      <div className="container-luxury relative z-10 py-24 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+        {/* Card Container */}
+        <div 
+          className="text-center px-8 md:px-20 py-14 md:py-20"
+          style={{ 
+            backgroundColor: '#F8F7F4',
+            borderRadius: '8px'
+          }}
         >
-          <span className="text-gold-500 text-sm tracking-[0.3em] uppercase mb-4 block">
-            Our Heritage
-          </span>
-          <h1 className="font-display text-5xl md:text-7xl text-white mb-6">
-            The Art of <span className="text-gradient">Essence</span>
+          {/* Main Heading */}
+          <h1 
+            className="font-playfair mb-6"
+            style={{
+              fontWeight: 400,
+              fontSize: '48px',
+              lineHeight: '60px',
+              color: '#171717'
+            }}
+          >
+            Crafting Memories
+            <br />
+            Through Fragrance
           </h1>
-          <p className="text-noir-300 text-lg max-w-2xl mx-auto">
-            For over three decades, we&apos;ve been crafting extraordinary fragrances 
-            that capture life&apos;s most precious moments.
+
+          {/* Description */}
+          <p 
+            className="text-base leading-relaxed max-w-2xl mx-auto"
+            style={{ color: '#6B6B6B' }}
+          >
+            At Perfume Store Atlanta, we believe every scent tells a story. For over a 
+            decade, we&apos;ve been creating luxury fragrances that capture emotions, 
+            celebrate moments, and define elegance.
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 }
-
