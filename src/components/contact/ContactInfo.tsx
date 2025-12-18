@@ -4,24 +4,24 @@ const contactDetails = [
   {
     icon: Mail,
     label: 'Email',
-    value: 'hello@essence.com',
-    href: 'mailto:hello@essence.com',
+    value: 'support@calra.com',
+    href: 'mailto:support@calra.com',
   },
   {
     icon: Phone,
-    label: 'Phone',
-    value: '+1 (555) 123-4567',
-    href: 'tel:+15551234567',
+    label: 'Support Helpline',
+    value: '+1 (404) 555-CALRA',
+    href: 'tel:+14045552257',
   },
   {
     icon: MapPin,
-    label: 'Address',
-    value: '123 Luxury Lane, Beverly Hills, CA 90210',
+    label: 'Store Address',
+    value: '3500 Peachtree Road NE, Atlanta, GA 30326',
   },
   {
     icon: Clock,
-    label: 'Hours',
-    value: 'Mon-Fri: 9AM-6PM PST',
+    label: 'Business Hours',
+    value: 'Mon-Sat: 10AM-8PM | Sun: 12PM-6PM EST',
   },
 ];
 

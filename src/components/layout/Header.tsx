@@ -2,15 +2,19 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Menu, X, LogOut, User, Heart, Package } from 'lucide-react';
 import { SearchModal } from '@/components/search/SearchModal';
 import { CartDrawer } from '@/components/cart/CartDrawer';
+import { useAuthStore } from '@/store/auth';
+import { useCartStore } from '@/store/cart';
+import { useToastStore } from '@/components/ui/Toast';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
+  { label: 'Home', href: '/' },
   { label: 'Shop', href: '/products' },
   { label: 'Collections', href: '/collections' },
-  { label: 'Stories', href: '/about' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ];
@@ -20,6 +24,21 @@ export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  
+  const { isAuthenticated, user, logout, openAuthModal } = useAuthStore();
+  const cartItems = useCartStore((state) => state.items);
+  const { showToast } = useToastStore();
+  
+  // Handle hydration
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  // Calculate total cart items
+  const cartItemCount = mounted ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 0;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +47,32 @@ export function Header() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleUserClick = () => {
+    if (isAuthenticated) {
+      setIsUserMenuOpen(!isUserMenuOpen);
+    } else {
+      openAuthModal();
+    }
+  };
+
+  const handleLogout = () => {
+    const userName = user?.name || 'User';
+    logout();
+    setIsUserMenuOpen(false);
+    showToast(`Goodbye, ${userName}! You've been signed out.`, 'logout');
+  };
 
   return (
     <>
@@ -78,7 +123,7 @@ export function Header() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setIsCartOpen(true)}
-              className="p-1.5 hover:opacity-70 rounded-full transition-opacity"
+              className="p-1.5 hover:opacity-70 rounded-full transition-opacity relative"
               aria-label="Cart"
             >
               <Image
@@ -88,20 +133,136 @@ export function Header() {
                 height={30}
                 className="w-[30px] h-[30px]"
               />
+              {cartItemCount > 0 && (
+                <span 
+                  className="absolute -top-1 -right-1 min-w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold rounded-full px-1"
+                  style={{ 
+                    backgroundColor: '#3D4A5C',
+                    color: '#FFFFFF'
+                  }}
+                >
+                  {cartItemCount > 99 ? '99+' : cartItemCount}
+                </span>
+              )}
             </button>
-            <button
-              onClick={() => setIsSearchOpen(true)}
-              className="p-1.5 hover:opacity-70 rounded-full transition-opacity"
-              aria-label="User"
-            >
-              <Image
-                src="/images/Landing Page/Icons/uesr.svg"
-                alt="User"
-                width={30}
-                height={30}
-                className="w-[30px] h-[30px]"
-              />
-            </button>
+            {/* User Menu */}
+            <div className="relative" ref={userMenuRef}>
+              <button
+                onClick={handleUserClick}
+                className="p-1.5 hover:opacity-70 rounded-full transition-opacity relative"
+                aria-label="User"
+              >
+                {isAuthenticated && (
+                  <div 
+                    className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white"
+                    style={{ backgroundColor: '#4CAF50' }}
+                  />
+                )}
+                <Image
+                  src="/images/Landing Page/Icons/uesr.svg"
+                  alt="User"
+                  width={30}
+                  height={30}
+                  className="w-[30px] h-[30px]"
+                />
+              </button>
+
+              {/* User Dropdown Menu */}
+              <AnimatePresence>
+                {isUserMenuOpen && isAuthenticated && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 mt-3 w-64 rounded-2xl overflow-hidden"
+                    style={{
+                      backgroundColor: '#FFFFFF',
+                      boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
+                      border: '1px solid #F0F0F0',
+                    }}
+                  >
+                    {/* User Info */}
+                    <div 
+                      className="px-4 py-4"
+                      style={{ 
+                        background: 'linear-gradient(135deg, #F5F1EA 0%, #EDE8DF 100%)',
+                        borderBottom: '1px solid #E5E0D5'
+                      }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div 
+                          className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold"
+                          style={{ backgroundColor: '#A8845E', color: '#FFFFFF' }}
+                        >
+                          {user?.name?.charAt(0).toUpperCase() || 'U'}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p 
+                            className="font-medium text-sm truncate"
+                            style={{ color: '#171717' }}
+                          >
+                            {user?.name || 'User'}
+                          </p>
+                          <p 
+                            className="text-xs truncate"
+                            style={{ color: '#6B6B6B' }}
+                          >
+                            {user?.email}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Menu Items */}
+                    <div className="py-2">
+                      <Link
+                        href="/account"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-gray-50"
+                        style={{ color: '#3F3F3F' }}
+                      >
+                        <User size={16} style={{ color: '#9B9B9B' }} />
+                        My Account
+                      </Link>
+                      <Link
+                        href="/account/orders"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-gray-50"
+                        style={{ color: '#3F3F3F' }}
+                      >
+                        <Package size={16} style={{ color: '#9B9B9B' }} />
+                        My Orders
+                      </Link>
+                      <Link
+                        href="/account/wishlist"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-gray-50"
+                        style={{ color: '#3F3F3F' }}
+                      >
+                        <Heart size={16} style={{ color: '#9B9B9B' }} />
+                        Wishlist
+                      </Link>
+                    </div>
+
+                    {/* Logout */}
+                    <div 
+                      className="py-2"
+                      style={{ borderTop: '1px solid #F0F0F0' }}
+                    >
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 w-full px-4 py-2.5 text-sm transition-colors hover:bg-red-50"
+                        style={{ color: '#DC2626' }}
+                      >
+                        <LogOut size={16} />
+                        Sign Out
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
             
             {/* Mobile Menu Button */}
             <button

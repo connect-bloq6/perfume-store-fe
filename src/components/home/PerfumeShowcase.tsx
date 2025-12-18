@@ -49,7 +49,7 @@ export function PerfumeShowcase() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="w-full md:flex-1 md:max-w-[48%] overflow-hidden rounded-[20px] md:rounded-[24px] lg:rounded-[30px]"
+              className="w-full md:flex-1 md:max-w-[48%]"
             >
               <Image
                 src="/images/Landing Page/Background/Subtract.png"
@@ -66,7 +66,7 @@ export function PerfumeShowcase() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="w-full md:flex-1 md:max-w-[48%] overflow-hidden rounded-[20px] md:rounded-[24px] lg:rounded-[30px]"
+              className="w-full md:flex-1 md:max-w-[48%]"
             >
               <Image
                 src="/images/Landing Page/Background/Subtract2.png"

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus } from 'lucide-react';
 
@@ -157,9 +158,12 @@ export function FAQ() {
                 <p className="text-charcoal-600 text-sm mb-4 leading-relaxed">
                   Contact our support team and we will make sure everything is clear and intuitive for you!
                 </p>
-                <button className="px-5 py-2.5 bg-[#A8845E] text-cream-50 text-sm font-medium rounded-full transition-all duration-300 hover:bg-[#8D6D4A]">
+                <Link 
+                  href="/contact"
+                  className="inline-block px-5 py-2.5 bg-[#A8845E] text-cream-50 text-sm font-medium rounded-full transition-all duration-300 hover:bg-[#8D6D4A]"
+                >
                   Contact Support
-                </button>
+                </Link>
               </motion.div>
             </div>
           </motion.div>

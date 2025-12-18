@@ -142,24 +142,32 @@ export function Bestsellers() {
                         backgroundColor: 'transparent'
                       }}
                     >
-                    {/* Badge */}
+                    {/* Badge - Glassmorphism Style */}
                     {product.badge && (
-                      <span 
-                        className="absolute top-3 left-3 md:top-4 md:left-4 z-10 font-inter flex items-center justify-center text-[14px] md:text-[16px]"
-                        style={{ 
-                          width: '80px',
-                          height: '32px',
-                          borderRadius: '6px',
-                          border: '1px solid transparent',
-                          background: 'linear-gradient(#E2DACB, #E2DACB) padding-box, linear-gradient(102.6deg, rgba(255, 255, 255, 0.25) 1.99%, rgba(255, 255, 255, 0) 38.43%) border-box',
-                          fontWeight: 700,
-                          lineHeight: '100%',
-                          letterSpacing: '0.08em',
-                          color: '#C09E81'
-                        }}
+                      <div 
+                        className="absolute top-3 left-3 md:top-4 md:left-4 z-10"
                       >
-                        {product.badge}
-                      </span>
+                        <div
+                          className="relative px-4 py-2 md:px-5 md:py-2.5 flex items-center justify-center"
+                          style={{
+                            borderRadius: '10px',
+                            background: 'linear-gradient(135deg, rgba(226, 218, 203, 0.9) 0%, rgba(220, 210, 195, 0.8) 100%)',
+                            backdropFilter: 'blur(10px)',
+                            WebkitBackdropFilter: 'blur(10px)',
+                            border: '1px solid rgba(255, 255, 255, 0.5)',
+                            boxShadow: '0 4px 16px rgba(121, 96, 64, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.4)',
+                          }}
+                        >
+                          <span
+                            className="font-medium text-[14px] md:text-[16px] tracking-wide"
+                            style={{
+                              color: '#9A7B5B',
+                            }}
+                          >
+                            {product.badge}
+                          </span>
+                        </div>
+                      </div>
                     )}
                     
                     {/* Product Image */}

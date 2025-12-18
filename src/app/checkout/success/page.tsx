@@ -74,7 +74,7 @@ const orderItems = [
     quantity: 2,
     priceEach: 145,
     total: 290,
-    image: '/images/Landing Page/Background/Desert Rose.png',
+    image: '/images/alpha.png',
   },
   {
     name: 'Mysterious',
@@ -82,7 +82,7 @@ const orderItems = [
     quantity: 4,
     priceEach: 180,
     total: 720,
-    image: '/images/Landing Page/Background/Mysterious.png',
+    image: '/images/alpha_chrome.png',
   },
   {
     name: 'Black Phoenix',
@@ -90,7 +90,7 @@ const orderItems = [
     quantity: 8,
     priceEach: 240,
     total: 1920,
-    image: '/images/Landing Page/Background/Blue.png',
+    image: '/images/alpha_oros.png',
   },
 ];
 

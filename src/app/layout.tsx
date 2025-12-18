@@ -6,6 +6,8 @@ import { Footer } from '@/components/layout/Footer';
 import { PageLoader } from '@/components/ui/PageLoader';
 import { CustomCursor } from '@/components/ui/CustomCursor';
 import { MagicEffectsProvider } from '@/components/ui/MagicEffects';
+import { AuthProvider } from '@/components/providers/AuthProvider';
+import { SessionProvider } from '@/components/providers/SessionProvider';
 
 const darkerGrotesque = Darker_Grotesque({
   subsets: ['latin'],
@@ -49,13 +51,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${darkerGrotesque.variable} ${montserrat.variable} ${inter.variable} ${playfairDisplay.variable}`}>
       <body className="bg-cream-200 text-charcoal-800 font-body antialiased">
-        <MagicEffectsProvider>
-          <PageLoader />
-          <CustomCursor />
-          <Header />
-          <main>{children}</main>
-          <Footer />
-        </MagicEffectsProvider>
+        <SessionProvider>
+          <MagicEffectsProvider>
+            <AuthProvider>
+              <PageLoader />
+              <CustomCursor />
+              <Header />
+              <main>{children}</main>
+              <Footer />
+            </AuthProvider>
+          </MagicEffectsProvider>
+        </SessionProvider>
       </body>
     </html>
   );

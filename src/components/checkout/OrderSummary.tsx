@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { formatPrice } from '@/lib/utils';
 
 const orderItems = [
-  { id: '1', name: 'Desert Rose', size: '50ml', price: 175, quantity: 1, image: '/images/Landing Page/Background/Desert Rose.png' },
-  { id: '2', name: 'Mysterious', size: '100ml', price: 250, quantity: 2, image: '/images/Landing Page/Background/Mysterious.png' },
+  { id: '1', name: 'Desert Rose', size: '50ml', price: 175, quantity: 1, image: '/images/alpha.png' },
+  { id: '2', name: 'Mysterious', size: '100ml', price: 250, quantity: 2, image: '/images/alpha_chrome.png' },
 ];
 
 export function OrderSummary() {

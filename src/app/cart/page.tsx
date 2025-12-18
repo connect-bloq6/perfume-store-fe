@@ -15,7 +15,7 @@ const initialCartItems = [
     collection: 'Original',
     price: 145,
     quantity: 20,
-    image: '/images/Landing Page/Background/Desert Rose.png',
+    image: '/images/alpha.png',
   },
   {
     id: '2',
@@ -24,7 +24,7 @@ const initialCartItems = [
     collection: 'Intense',
     price: 180,
     quantity: 40,
-    image: '/images/Landing Page/Background/Mysterious.png',
+    image: '/images/alpha_chrome.png',
   },
   {
     id: '3',
@@ -33,7 +33,7 @@ const initialCartItems = [
     collection: 'Limited',
     price: 240,
     quantity: 80,
-    image: '/images/Landing Page/Background/Blue.png',
+    image: '/images/alpha_oros.png',
   },
 ];
 

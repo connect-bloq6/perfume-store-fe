@@ -10,42 +10,42 @@ const collections = [
     name: 'Floral', 
     description: 'Delicate & romantic scents',
     count: 12, 
-    image: '/images/Landing Page/Background/Desert Rose.png' 
+    image: '/images/alpha.png' 
   },
   { 
     id: 'woody', 
     name: 'Woody', 
     description: 'Bold & sophisticated fragrances',
     count: 8, 
-    image: '/images/Landing Page/Background/Mysterious.png' 
+    image: '/images/alpha_chrome.png' 
   },
   { 
     id: 'oriental', 
     name: 'Oriental', 
     description: 'Rich & exotic blends',
     count: 10, 
-    image: '/images/Landing Page/Background/Blue.png' 
+    image: '/images/alpha_oros.png' 
   },
   { 
     id: 'gourmand', 
     name: 'Gourmand', 
     description: 'Sweet & indulgent notes',
     count: 6, 
-    image: '/images/Landing Page/Background/Subtract2.png' 
+    image: '/images/alpha_safir.png' 
   },
   { 
     id: 'luxury', 
     name: 'Luxury', 
     description: 'Premium exclusive collection',
     count: 4, 
-    image: '/images/Landing Page/Background/Single.png' 
+    image: '/images/alpha.png' 
   },
   { 
     id: 'collection', 
     name: 'Gift Sets', 
     description: 'Perfect for gifting',
     count: 3, 
-    image: '/images/Landing Page/Background/Three.png' 
+    image: '/images/alpha_chrome.png' 
   },
 ];
 

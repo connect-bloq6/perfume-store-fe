@@ -4,21 +4,24 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { X, ShoppingBag } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
+import { useCartStore } from '@/store/cart';
+import { useToastStore } from '@/components/ui/Toast';
 
 interface CartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-// Placeholder cart items with correct image paths
-const cartItems = [
-  { id: '1', name: 'Desert Rose', size: '50ml', price: 175, quantity: 1, image: '/images/Landing Page/Background/Desert Rose.png' },
-  { id: '2', name: 'Mysterious', size: '100ml', price: 250, quantity: 2, image: '/images/Landing Page/Background/Mysterious.png' },
-];
-
 export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
+  const { items: cartItems, removeItem } = useCartStore();
+  const showToast = useToastStore((state) => state.showToast);
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  const handleRemoveItem = (id: string, name: string) => {
+    removeItem(id);
+    showToast(`${name} removed from cart`, 'cart_remove');
+  };
 
   return (
     <>
@@ -130,6 +133,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                             </p>
                           </div>
                           <button 
+                            onClick={() => handleRemoveItem(item.id, item.name)}
                             className="p-1 hover:bg-gray-100 rounded transition-colors"
                             aria-label="Remove item"
                           >

@@ -1,6 +1,7 @@
 import { ProductGrid } from '@/components/products/ProductGrid';
 import { ProductFilters } from '@/components/products/ProductFilters';
 import { ProductSort } from '@/components/products/ProductSort';
+import { ProductCount } from '@/components/products/ProductCount';
 
 export const metadata = {
   title: 'Shop | Perfume Store Atlanta',
@@ -42,9 +43,7 @@ export default function ProductsPage() {
             <div className="flex-1">
               {/* Top Bar */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 pb-6 border-b" style={{ borderColor: '#C5B299' }}>
-                <p className="text-sm" style={{ color: '#6B6B6B' }}>
-                  Showing <span style={{ color: '#65553F', fontWeight: 600 }}>24</span> fragrances
-                </p>
+                <ProductCount />
                 <ProductSort />
               </div>
 

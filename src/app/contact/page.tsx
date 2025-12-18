@@ -319,81 +319,20 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative max-w-4xl mx-auto"
+            className="relative max-w-5xl mx-auto"
           >
-            <div className="relative h-[400px] flex items-center justify-center">
-              {/* Map Background - Using dots pattern */}
-              <svg 
-                viewBox="0 0 800 400" 
-                className="w-full h-full"
-                style={{ maxWidth: '800px' }}
-              >
-                {/* North America */}
-                <g fill="#D4C8B8" opacity="0.6">
-                  {/* USA dots */}
-                  {[...Array(50)].map((_, i) => (
-                    <circle key={`na-${i}`} cx={80 + (i % 10) * 18} cy={100 + Math.floor(i / 10) * 18} r="3" />
-                  ))}
-                </g>
-                
-                {/* South America */}
-                <g fill="#D4C8B8" opacity="0.6">
-                  {[...Array(25)].map((_, i) => (
-                    <circle key={`sa-${i}`} cx={150 + (i % 5) * 18} cy={250 + Math.floor(i / 5) * 18} r="3" />
-                  ))}
-                </g>
-
-                {/* Europe */}
-                <g fill="#D4C8B8" opacity="0.6">
-                  {[...Array(30)].map((_, i) => (
-                    <circle key={`eu-${i}`} cx={350 + (i % 6) * 15} cy={80 + Math.floor(i / 6) * 15} r="3" />
-                  ))}
-                </g>
-
-                {/* Africa */}
-                <g fill="#D4C8B8" opacity="0.6">
-                  {[...Array(35)].map((_, i) => (
-                    <circle key={`af-${i}`} cx={370 + (i % 7) * 15} cy={180 + Math.floor(i / 7) * 15} r="3" />
-                  ))}
-                </g>
-
-                {/* Asia */}
-                <g fill="#D4C8B8" opacity="0.6">
-                  {[...Array(60)].map((_, i) => (
-                    <circle key={`as-${i}`} cx={480 + (i % 12) * 15} cy={90 + Math.floor(i / 12) * 15} r="3" />
-                  ))}
-                </g>
-
-                {/* Australia */}
-                <g fill="#D4C8B8" opacity="0.6">
-                  {[...Array(15)].map((_, i) => (
-                    <circle key={`au-${i}`} cx={620 + (i % 5) * 15} cy={300 + Math.floor(i / 5) * 15} r="3" />
-                  ))}
-                </g>
-
-                {/* Atlanta Location Marker */}
-                <g>
-                  <circle cx="155" cy="145" r="8" fill="#C4A77D" />
-                  <circle cx="155" cy="145" r="12" fill="#C4A77D" opacity="0.3" />
-                  <circle cx="155" cy="145" r="16" fill="#C4A77D" opacity="0.15" />
-                </g>
-              </svg>
-
-              {/* Atlanta Label */}
-              <div 
-                className="absolute flex items-center gap-2 px-3 py-1.5 rounded-full shadow-sm"
-                style={{ 
-                  left: '18%', 
-                  top: '32%',
-                  backgroundColor: '#FFFFFF',
-                  border: '1px solid #E5E5E5'
-                }}
-              >
-                <MapPin size={14} style={{ color: '#C4A77D' }} />
-                <span className="text-sm font-medium" style={{ color: '#171717' }}>
-                  Perfume Store Atlanta
-                </span>
+            <div className="relative rounded-2xl overflow-hidden" style={{ backgroundColor: '#F5F4F1' }}>
+              {/* Map Image */}
+              <div className="relative w-full h-[450px]">
+                <Image
+                  src="/images/map.png"
+                  alt="World Map - Perfume Store Atlanta Location"
+                  fill
+                  className="object-contain"
+                  quality={100}
+                />
               </div>
+
             </div>
           </motion.div>
 

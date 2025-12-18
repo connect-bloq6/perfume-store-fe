@@ -266,9 +266,9 @@ export default function CollectionsPage() {
           
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {[
-              { name: 'Floral', desc: 'Delicate & romantic', image: '/images/Landing Page/Background/Desert Rose.png' },
-              { name: 'Woody', desc: 'Bold & sophisticated', image: '/images/Landing Page/Background/Mysterious.png' },
-              { name: 'Oriental', desc: 'Rich & exotic', image: '/images/Landing Page/Background/Blue.png' },
+              { name: 'Floral', desc: 'Delicate & romantic', image: '/images/alpha.png' },
+              { name: 'Woody', desc: 'Bold & sophisticated', image: '/images/alpha_chrome.png' },
+              { name: 'Oriental', desc: 'Rich & exotic', image: '/images/alpha_oros.png' },
             ].map((cat, index) => (
               <motion.div
                 key={cat.name}
