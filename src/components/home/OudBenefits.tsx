@@ -23,7 +23,6 @@ export function OudBenefits() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            {/* Heading */}
             <h2 
               className="font-display text-[48px] md:text-[60px] lg:text-[80px]"
               style={{
@@ -55,9 +54,11 @@ export function OudBenefits() {
                 >
                   <span 
                     className="flex-shrink-0 rounded-full w-[5px] h-[5px] md:w-[6px] md:h-[6px]"
-                    style={{ backgroundColor: '#000000' }}
+                    style={{ 
+                      backgroundColor: '#000000' 
+                    }}
                   />
-                  <span>{benefit}</span>
+                  {benefit}
                 </motion.li>
               ))}
             </ul>
@@ -72,9 +73,13 @@ export function OudBenefits() {
             className="relative"
           >
             <div className="relative max-w-[280px] md:max-w-[320px] lg:max-w-sm mx-auto md:ml-auto">
+              {/* Main image container */}
               <div 
                 className="relative overflow-hidden"
-                style={{ borderRadius: '20px' }}
+                style={{
+                  borderRadius: '20px',
+                  backgroundColor: 'transparent'
+                }}
               >
                 <Image
                   src="/images/Landing Page/Background/Blue.png"
@@ -92,3 +97,4 @@ export function OudBenefits() {
     </section>
   );
 }
+

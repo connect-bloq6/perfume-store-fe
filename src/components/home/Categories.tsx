@@ -64,8 +64,6 @@ export function Categories() {
                     src={category.image}
                     alt={category.name}
                     fill
-                    quality={100}
-                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700"
                   />
                 </div>
