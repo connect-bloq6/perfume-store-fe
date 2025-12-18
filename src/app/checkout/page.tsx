@@ -1,8 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { MapPin, User, Mail, Phone, Home, CreditCard } from 'lucide-react';
+import { MapPin, User, Mail, Phone, Home, CreditCard, ShoppingBag } from 'lucide-react';
+import { useCartStore } from '@/store/cart';
+import { useToastStore } from '@/components/ui/Toast';
+import Link from 'next/link';
 
 const steps = [
   { number: 1, label: 'Shopping cart', active: false, completed: true },
@@ -16,14 +21,11 @@ const paymentMethods = [
   { id: 'cod', label: 'Cash on Delivery' },
 ];
 
-// Cart items for order summary calculation
-const cartItems = [
-  { name: 'Desert Rose', price: 145, quantity: 20 },
-  { name: 'Mysterious', price: 180, quantity: 40 },
-  { name: 'Black Phoenix', price: 240, quantity: 80 },
-];
-
 export default function CheckoutPage() {
+  const router = useRouter();
+  const { items: cartItems, clearCart } = useCartStore();
+  const showToast = useToastStore((state) => state.showToast);
+  const [mounted, setMounted] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState('card');
   const [formData, setFormData] = useState({
     firstName: '',
@@ -38,6 +40,17 @@ export default function CheckoutPage() {
     cvv: '',
   });
 
+  // Handle hydration
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Calculate totals
+  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const discount = Math.round(subtotal * 0.2);
+  const deliveryFee = subtotal > 0 ? 15 : 0;
+  const total = subtotal - discount + deliveryFee;
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -45,9 +58,45 @@ export default function CheckoutPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    window.location.href = '/checkout/success';
+    // Clear cart and show success
+    clearCart();
+    showToast('Order placed successfully!', 'success');
+    router.push('/checkout/success');
   };
+
+  // Loading state
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAFAFA' }}>
+        <div className="animate-pulse text-gray-400">Loading checkout...</div>
+      </div>
+    );
+  }
+
+  // Empty cart redirect
+  if (cartItems.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAFAFA' }}>
+        <div className="text-center">
+          <div 
+            className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+            style={{ backgroundColor: '#F5EDE0' }}
+          >
+            <ShoppingBag size={36} style={{ color: '#A8845E' }} />
+          </div>
+          <h2 className="text-xl font-semibold mb-2" style={{ color: '#4A3D2A' }}>Your cart is empty</h2>
+          <p className="text-sm mb-6" style={{ color: '#6B6B6B' }}>Add some products before checkout</p>
+          <Link
+            href="/products"
+            className="inline-block px-6 py-3 rounded-full font-medium transition-opacity hover:opacity-90"
+            style={{ backgroundColor: '#A8845E', color: '#FFFFFF' }}
+          >
+            Go to Shop
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FAFAFA' }}>
@@ -439,38 +488,67 @@ export default function CheckoutPage() {
                 Order Summary
               </h2>
 
-              {/* Summary Items */}
+              {/* Cart Items Preview */}
               <div className="space-y-4 mb-6">
-                <div className="flex justify-between">
+                {cartItems.map((item) => (
+                  <div key={item.id} className="flex items-center gap-3">
+                    <div 
+                      className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0"
+                      style={{ backgroundColor: '#F5EDE0' }}
+                    >
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-contain p-1"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate" style={{ color: '#171717' }}>
+                        {item.name}
+                      </p>
+                      <p className="text-xs" style={{ color: '#6B6B6B' }}>
+                        {item.size} × {item.quantity}
+                      </p>
+                    </div>
+                    <span className="text-sm font-medium" style={{ color: '#A8845E' }}>
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Divider */}
+              <div className="h-px mb-4" style={{ backgroundColor: '#F0F0F0' }} />
+
+              {/* Summary Items */}
+              <div className="space-y-3 mb-4">
+                <div className="flex justify-between text-sm">
                   <span style={{ color: '#6B6B6B' }}>Subtotal</span>
                   <span className="font-medium" style={{ color: '#171717' }}>
-                    ${cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0).toLocaleString()}
+                    ${subtotal.toFixed(2)}
                   </span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between text-sm">
                   <span style={{ color: '#6B6B6B' }}>Discount (-20%)</span>
-                  <span className="font-medium" style={{ color: '#EF4444' }}>
-                    -${Math.round(cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 0.2).toLocaleString()}
+                  <span className="font-medium" style={{ color: '#10B981' }}>
+                    -${discount.toFixed(2)}
                   </span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between text-sm">
                   <span style={{ color: '#6B6B6B' }}>Delivery Fee</span>
-                  <span className="font-medium" style={{ color: '#171717' }}>$15</span>
+                  <span className="font-medium" style={{ color: '#171717' }}>${deliveryFee.toFixed(2)}</span>
                 </div>
               </div>
 
               {/* Divider */}
-              <div className="h-px mb-6" style={{ backgroundColor: '#F0F0F0' }} />
+              <div className="h-px mb-4" style={{ backgroundColor: '#F0F0F0' }} />
 
               {/* Total */}
               <div className="flex justify-between items-center mb-6">
                 <span className="font-semibold text-lg" style={{ color: '#171717' }}>Total</span>
-                <span className="font-bold text-2xl" style={{ color: '#171717' }}>
-                  ${(
-                    cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) -
-                    Math.round(cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 0.2) +
-                    15
-                  ).toLocaleString()}
+                <span className="font-bold text-2xl" style={{ color: '#A8845E' }}>
+                  ${total.toFixed(2)}
                 </span>
               </div>
 
@@ -478,13 +556,13 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 className="w-full py-3 rounded-xl font-medium transition-opacity hover:opacity-90 mb-3"
-                style={{ backgroundColor: '#C5B299', color: '#FFFFFF' }}
+                style={{ backgroundColor: '#A8845E', color: '#FFFFFF' }}
               >
                 Place Order
               </button>
 
               {/* Terms */}
-              <p className="text-center text-xs whitespace-nowrap" style={{ color: '#9CA3AF' }}>
+              <p className="text-center text-xs" style={{ color: '#9CA3AF' }}>
                 By placing your order, you agree to our terms and conditions
               </p>
             </div>
