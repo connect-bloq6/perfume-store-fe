@@ -69,17 +69,31 @@ export function OurStory() {
           </div>
 
           {/* Right - Image */}
-          <div className="relative">
-            <div className="relative max-w-md lg:max-w-lg mx-auto">
+          <div className="relative flex justify-center lg:justify-end">
+            {/* Cream frame - exact Figma gradient */}
+            <div 
+              className="relative w-full max-w-[420px]"
+              style={{ 
+                padding: '14px',
+                background: 'linear-gradient(180deg, #F4ECDE 0%, #E8DCC8 100%)',
+                borderRadius: '16px',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.06)'
+              }}
+            >
+              {/* Image container */}
               <div 
-                className="relative aspect-[4/5] overflow-hidden"
-                style={{ borderRadius: '30px', backgroundColor: '#F5F1EA' }}
+                className="relative overflow-hidden"
+                style={{ 
+                  aspectRatio: '4/5',
+                  width: '100%',
+                  borderRadius: '10px'
+                }}
               >
                 <Image
                   src="/images/Landing Page/Background/Single.png"
                   alt="Imperial Gold Elixir Perfume"
                   fill
-                  className="object-cover"
+                  className="object-contain"
                   quality={100}
                 />
               </div>

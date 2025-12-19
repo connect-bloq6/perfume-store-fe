@@ -319,7 +319,7 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative max-w-5xl mx-auto"
+            className="relative"
           >
             <div className="relative rounded-2xl overflow-hidden" style={{ backgroundColor: '#F5F4F1' }}>
               {/* Map Image */}

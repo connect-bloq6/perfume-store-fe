@@ -111,19 +111,19 @@ export function ProductCard({ product }: ProductCardProps) {
     >
       {/* Outer Border Frame */}
       <div
-        className="relative p-[3px] rounded-2xl transition-all duration-300"
+        className="relative p-[2px] rounded-lg transition-all duration-300"
         style={{
-          border: '1.5px solid #796040',
+          border: '1px solid #796040',
           backgroundColor: '#F5EDE0',
           boxShadow: isHovered 
-            ? '0 15px 40px rgba(121, 96, 64, 0.15)' 
-            : '0 5px 20px rgba(0, 0, 0, 0.05)',
-          transform: isHovered ? 'translateY(-5px)' : 'translateY(0)',
+            ? '0 8px 20px rgba(121, 96, 64, 0.1)' 
+            : '0 2px 8px rgba(0, 0, 0, 0.03)',
+          transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
         }}
       >
         {/* Inner Border Frame */}
         <div
-          className="relative rounded-xl overflow-hidden"
+          className="relative rounded-md overflow-hidden"
           style={{
             border: '1px solid #C5B299',
             backgroundColor: '#F5EDE0',
@@ -135,15 +135,15 @@ export function ProductCard({ product }: ProductCardProps) {
             onClick={handleCardClick}
             className="block"
           >
-            {/* Image Container */}
+            {/* Image Container - Compact */}
             <div 
-              className="relative aspect-square flex items-center justify-center overflow-hidden"
+              className="relative aspect-[3/4] flex items-center justify-center overflow-hidden"
               style={{ backgroundColor: '#F5EDE0' }}
             >
-              {/* Product Image */}
+              {/* Product Image - Zoomed */}
               <div
-                className={`relative z-10 w-[90%] h-[90%] transition-transform duration-500 ${
-                  isHovered ? 'scale-105' : 'scale-100'
+                className={`relative z-10 w-[95%] h-[95%] transition-transform duration-500 ${
+                  isHovered ? 'scale-110' : 'scale-105'
                 }`}
               >
                 <Image
@@ -151,17 +151,17 @@ export function ProductCard({ product }: ProductCardProps) {
                   alt={product.name}
                   fill
                   quality={100}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  sizes="240px"
                   className="object-contain"
                 />
               </div>
 
               {/* Badges */}
               {(product.isNew || product.isBestseller) && (
-                <div className="absolute top-4 left-4 flex flex-col gap-2 z-20">
+                <div className="absolute top-1.5 left-1.5 flex flex-col gap-0.5 z-20">
                   {product.isNew && (
                     <span 
-                      className="px-3 py-1 text-xs font-medium rounded-full"
+                      className="px-1.5 py-0.5 text-[8px] font-medium rounded-full"
                       style={{ backgroundColor: '#A8845E', color: '#FEFDFB' }}
                     >
                       New
@@ -169,7 +169,7 @@ export function ProductCard({ product }: ProductCardProps) {
                   )}
                   {product.isBestseller && (
                     <span 
-                      className="px-3 py-1 text-xs font-medium rounded-full"
+                      className="px-1.5 py-0.5 text-[8px] font-medium rounded-full"
                       style={{ backgroundColor: '#65553F', color: '#FEFDFB' }}
                     >
                       Bestseller
@@ -180,22 +180,22 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           </Link>
 
-          {/* Wishlist Button - Top Right - Outside Link */}
+          {/* Wishlist Button - Top Right */}
           <button
             type="button"
             onClick={handleWishlist}
-            className="absolute top-7 right-7 z-30 w-9 h-9 rounded-full flex items-center justify-center shadow-md cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95"
+            className="absolute top-1.5 right-1.5 z-30 w-6 h-6 rounded-full flex items-center justify-center shadow-sm cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95"
             style={{ 
               backgroundColor: showWishlistActive ? '#DC2626' : '#FFFFFF', 
               color: showWishlistActive ? '#FFFFFF' : '#65553F',
               border: showWishlistActive ? 'none' : '1px solid #D4C9B8',
               boxShadow: showWishlistActive 
-                ? '0 4px 12px rgba(220, 38, 38, 0.4)' 
-                : '0 2px 8px rgba(0, 0, 0, 0.1)'
+                ? '0 2px 6px rgba(220, 38, 38, 0.3)' 
+                : '0 1px 3px rgba(0, 0, 0, 0.06)'
             }}
           >
             <Heart 
-              size={16} 
+              size={10} 
               fill={showWishlistActive ? '#FFFFFF' : 'none'} 
               strokeWidth={showWishlistActive ? 0 : 2}
             />
@@ -203,18 +203,18 @@ export function ProductCard({ product }: ProductCardProps) {
 
           {/* Separator Line */}
           <div 
-            className="mx-4"
+            className="mx-2"
             style={{ height: '1px', backgroundColor: '#E5DED3' }}
           />
 
-          {/* Product Info */}
-          <div className="p-4 pt-3">
+          {/* Product Info - Compact */}
+          <div className="p-2 pt-1.5">
             <Link 
               href={`/products/${product.slug}`} 
               onClick={handleCardClick}
             >
               <h3 
-                className="font-display text-base font-semibold uppercase tracking-wide mb-2 hover:opacity-70 transition-opacity"
+                className="font-display text-[10px] font-semibold uppercase tracking-wide mb-0.5 hover:opacity-70 transition-opacity line-clamp-1"
                 style={{ color: '#4A3D2A' }}
               >
                 {product.name}
@@ -222,15 +222,15 @@ export function ProductCard({ product }: ProductCardProps) {
             </Link>
             
             {/* Price */}
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-1 mb-0.5">
               <span 
-                className="text-sm line-through"
+                className="text-[9px] line-through"
                 style={{ color: '#9B9B9B' }}
               >
                 ${originalPrice}
               </span>
               <span 
-                className="text-lg font-semibold"
+                className="text-xs font-semibold"
                 style={{ color: '#4A3D2A' }}
               >
                 ${displayPrice}
@@ -238,44 +238,44 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
 
             {/* Star Rating */}
-            <div className="flex items-center gap-1 mb-3">
+            <div className="flex items-center gap-0.5 mb-1.5">
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star
                   key={star}
-                  size={14}
+                  size={8}
                   fill="#A8845E"
                   color="#A8845E"
                 />
               ))}
               <span 
-                className="text-sm ml-1"
+                className="text-[9px] ml-0.5"
                 style={{ color: '#6B6B6B' }}
               >
                 5.0
               </span>
             </div>
 
-            {/* Add to Cart Button - Always Visible */}
+            {/* Add to Cart Button */}
             <button
               type="button"
               onClick={handleAddToCart}
-              className="w-full py-2.5 rounded-full font-medium text-sm flex items-center justify-center gap-2 transition-all duration-300 hover:opacity-90 active:scale-[0.98] cursor-pointer"
+              className="w-full py-1.5 rounded-full font-medium text-[10px] flex items-center justify-center gap-1 transition-all duration-300 hover:opacity-90 active:scale-[0.98] cursor-pointer"
               style={{ 
                 backgroundColor: isAddedToCart ? '#4CAF50' : '#A8845E', 
                 color: '#FFFFFF',
                 boxShadow: isAddedToCart 
-                  ? '0 4px 12px rgba(76, 175, 80, 0.4)' 
-                  : '0 4px 12px rgba(168, 132, 94, 0.3)'
+                  ? '0 2px 6px rgba(76, 175, 80, 0.25)' 
+                  : '0 2px 6px rgba(168, 132, 94, 0.15)'
               }}
             >
               {isAddedToCart ? (
                 <>
-                  <Check size={16} />
-                  Added to Cart
+                  <Check size={10} />
+                  Added
                 </>
               ) : (
                 <>
-                  <ShoppingBag size={16} />
+                  <ShoppingBag size={10} />
                   Add to Cart
                 </>
               )}

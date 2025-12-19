@@ -88,10 +88,16 @@ export function Craftsmanship() {
             {stats.map((stat, index) => (
               <div 
                 key={index} 
-                className="text-center py-10 px-8 rounded-3xl"
+                className="text-center py-10 px-8 rounded-3xl cursor-pointer transition-all duration-300 ease-out hover:scale-[1.02] hover:-translate-y-1"
                 style={{ 
                   backgroundColor: '#FAFAFA',
                   boxShadow: '0 8px 30px rgba(0,0,0,0.04)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.04)';
                 }}
               >
                 {/* Number */}
@@ -173,10 +179,19 @@ export function Craftsmanship() {
           {values.map((value) => (
             <div
               key={value.title}
-              className="p-6 rounded-2xl"
+              className="p-6 rounded-2xl cursor-pointer transition-all duration-300 ease-out hover:scale-[1.02] hover:-translate-y-1"
               style={{ 
                 backgroundColor: '#FAFAFA',
-                border: '1px solid #F0F0F0'
+                border: '1px solid #F0F0F0',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.1)';
+                e.currentTarget.style.borderColor = '#E5DED3';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+                e.currentTarget.style.borderColor = '#F0F0F0';
               }}
             >
               {/* Icon */}
@@ -208,43 +223,53 @@ export function Craftsmanship() {
         </div>
 
         {/* Section 4 - Artisan Craftsmanship */}
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center min-h-[80vh] py-8">
-          {/* Left - Images with frames */}
-          <div className="space-y-5">
-            {/* Top Image with frame */}
+        <div className="grid lg:grid-cols-2 gap-4 items-start py-8 max-w-6xl mx-auto">
+          {/* Left - Images (using pre-designed Container images) */}
+          <div className="space-y-3">
+            {/* Top Image - Container.png */}
             <div 
-              className="p-3 rounded-3xl"
-              style={{ backgroundColor: '#F5F3EF' }}
+              className="relative w-full cursor-pointer transition-all duration-300 ease-out hover:scale-[1.02] hover:-translate-y-1"
+              style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.12)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.06)';
+              }}
             >
-              <div 
-                className="relative overflow-hidden"
-                style={{ borderRadius: '20px', height: '280px' }}
-              >
-                <Image
-                  src="/images/Landing Page/Background/Subtract2.png"
-                  alt="La Perfume Wild Caramel"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              <Image
+                src="/images/Container.png"
+                alt="Perfume bottle with elegant design"
+                width={800}
+                height={540}
+                className="w-full h-auto"
+                quality={100}
+                priority
+                unoptimized
+              />
             </div>
 
-            {/* Bottom Image with frame */}
+            {/* Bottom Image - Container2.png */}
             <div 
-              className="p-3 rounded-3xl"
-              style={{ backgroundColor: '#F5F3EF' }}
+              className="relative w-full cursor-pointer transition-all duration-300 ease-out hover:scale-[1.02] hover:-translate-y-1"
+              style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.12)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.06)';
+              }}
             >
-              <div 
-                className="relative overflow-hidden"
-                style={{ borderRadius: '20px', height: '280px' }}
-              >
-                <Image
-                  src="/images/Landing Page/Background/Three.png"
-                  alt="Our perfume collection"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              <Image
+                src="/images/Container2.png"
+                alt="Our perfume collection"
+                width={800}
+                height={540}
+                className="w-full h-auto"
+                quality={100}
+                priority
+                unoptimized
+              />
             </div>
           </div>
 

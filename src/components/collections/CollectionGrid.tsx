@@ -51,7 +51,7 @@ const collections = [
 
 export function CollectionGrid() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6">
       {collections.map((collection, index) => (
         <motion.div
           key={collection.id}
@@ -62,41 +62,41 @@ export function CollectionGrid() {
         >
           <Link
             href={`/collections/${collection.id}`}
-            className="group block rounded-2xl overflow-hidden transition-shadow hover:shadow-lg"
-            style={{ backgroundColor: '#FFFFFF', border: '1px solid #F0F0F0' }}
+            className="group block rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg"
+            style={{ backgroundColor: '#FEFDFB', border: '1px solid #E5DED3' }}
           >
             {/* Image */}
             <div 
-              className="relative aspect-[4/3] overflow-hidden"
-              style={{ backgroundColor: '#FAF8F5' }}
+              className="relative aspect-square overflow-hidden"
+              style={{ backgroundColor: '#F5EDE0' }}
             >
               <Image
                 src={collection.image}
                 alt={collection.name}
                 fill
                 quality={100}
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-contain p-6 group-hover:scale-105 transition-transform duration-500"
+                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                className="object-contain p-8 md:p-10 group-hover:scale-105 transition-transform duration-500"
               />
             </div>
             
             {/* Content */}
-            <div className="p-5">
-              <div className="flex items-center justify-between mb-2">
+            <div className="p-3 md:p-4">
+              <div className="flex items-center justify-between mb-1">
                 <h3 
-                  className="font-medium"
-                  style={{ color: '#171717', fontSize: '18px' }}
+                  className="font-semibold text-sm md:text-base"
+                  style={{ color: '#4A3D2A' }}
                 >
                   {collection.name}
                 </h3>
                 <span 
-                  className="text-xs px-2 py-1 rounded-full"
-                  style={{ backgroundColor: '#F5F1EA', color: '#6B6B6B' }}
+                  className="text-[10px] md:text-xs px-2 py-0.5 rounded-full"
+                  style={{ backgroundColor: '#F5EDE0', color: '#A8845E' }}
                 >
-                  {collection.count} items
+                  {collection.count}
                 </span>
               </div>
-              <p className="text-sm" style={{ color: '#6B6B6B' }}>
+              <p className="text-xs md:text-sm" style={{ color: '#6B6B6B' }}>
                 {collection.description}
               </p>
             </div>

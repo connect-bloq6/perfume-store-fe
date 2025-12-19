@@ -29,7 +29,7 @@ const sortOptions = [
 export default function CollectionsPage() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [sortBy, setSortBy] = useState('featured');
-  const [gridCols, setGridCols] = useState(3);
+  const [gridCols, setGridCols] = useState(4);
 
   // Filter products by category
   const filteredProducts = activeCategory === 'all' 
@@ -183,26 +183,23 @@ export default function CollectionsPage() {
 
         {/* Results Count */}
         <p className="text-sm mb-6" style={{ color: '#6B6B6B' }}>
-          Showing {sortedProducts.length} {sortedProducts.length === 1 ? 'product' : 'products'}
+          Showing {Math.min(sortedProducts.length, 9)} of {sortedProducts.length} products
         </p>
 
-        {/* Products Grid */}
+        {/* Products Grid - Limited to 9 products, 3 per row - Compact cards */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.3 }}
-          className={`grid gap-6 ${
-            gridCols === 4 
-              ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
-              : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-          }`}
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-5 max-w-5xl mx-auto"
         >
-          {sortedProducts.map((product, index) => (
+          {sortedProducts.slice(0, 9).map((product, index) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
+              className="max-w-[280px] mx-auto w-full"
             >
               <ProductCard 
                 product={{
