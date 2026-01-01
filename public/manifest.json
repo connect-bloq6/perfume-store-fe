@@ -1,0 +1,43 @@
+{
+  "name": "CALRA Perfumes - Wholesale Luxury Fragrances Atlanta",
+  "short_name": "CALRA Perfumes",
+  "description": "Atlanta's premier wholesale perfume distributor. Luxury fragrances for retailers.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F1EA",
+  "theme_color": "#C4A77D",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "categories": ["shopping", "business", "lifestyle"],
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/og-image.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "label": "CALRA Perfumes Homepage"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
+

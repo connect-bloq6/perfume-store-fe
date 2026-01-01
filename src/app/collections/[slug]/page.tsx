@@ -1,169 +1,134 @@
-'use client';
-
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { SlidersHorizontal, Grid3X3, LayoutGrid } from 'lucide-react';
-import { CollectionHeader } from '@/components/collections/CollectionHeader';
-import { ProductCard } from '@/components/products/ProductCard';
+import { Metadata } from 'next';
+import { ItemListJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import { products } from '@/data/products';
+import { siteConfig } from '@/lib/constants';
+import CollectionSlugPageClient from './CollectionSlugPageClient';
 
 interface CollectionPageProps {
   params: { slug: string };
 }
 
-const sortOptions = [
-  { id: 'featured', name: 'Featured' },
-  { id: 'newest', name: 'Newest' },
-  { id: 'price-low', name: 'Price: Low to High' },
-  { id: 'price-high', name: 'Price: High to Low' },
-  { id: 'rating', name: 'Best Rating' },
-];
+// Collection metadata mapping
+const collectionMeta: Record<string, { title: string; description: string; keywords: string[] }> = {
+  floral: {
+    title: 'Floral Perfumes | Wholesale Rose & Jasmine Fragrances Atlanta',
+    description: 'Wholesale floral perfumes featuring rose, jasmine, peony, and lily fragrances. Premium feminine scents for Atlanta retailers. Bulk pricing available.',
+    keywords: ['floral perfume wholesale', 'rose fragrance bulk', 'jasmine perfume Atlanta', 'feminine scents wholesale'],
+  },
+  woody: {
+    title: 'Woody Perfumes | Wholesale Sandalwood & Cedar Fragrances Atlanta',
+    description: 'Wholesale woody perfumes with sandalwood, cedar, and vetiver notes. Bold masculine fragrances for Atlanta retailers. Competitive bulk pricing.',
+    keywords: ['woody perfume wholesale', 'sandalwood fragrance bulk', 'cedar cologne Atlanta', 'masculine scents wholesale'],
+  },
+  oriental: {
+    title: 'Oriental Perfumes | Wholesale Amber & Oud Fragrances Atlanta',
+    description: 'Wholesale oriental perfumes featuring amber, oud, and spice notes. Exotic luxury fragrances for Atlanta retailers. Premium quality.',
+    keywords: ['oriental perfume wholesale', 'amber fragrance bulk', 'oud perfume Atlanta', 'exotic scents wholesale'],
+  },
+  gourmand: {
+    title: 'Gourmand Perfumes | Wholesale Vanilla & Caramel Fragrances Atlanta',
+    description: 'Wholesale gourmand perfumes with vanilla, caramel, and sweet notes. Delicious fragrances for Atlanta retailers. Bulk orders welcome.',
+    keywords: ['gourmand perfume wholesale', 'vanilla fragrance bulk', 'sweet perfume Atlanta', 'caramel scents wholesale'],
+  },
+  luxury: {
+    title: 'Luxury Perfumes | Wholesale Premium Designer Fragrances Atlanta',
+    description: 'Wholesale luxury perfumes from premium brands. High-end designer fragrances for discerning Atlanta retailers. Exclusive collections.',
+    keywords: ['luxury perfume wholesale', 'designer fragrance bulk', 'premium perfume Atlanta', 'exclusive scents wholesale'],
+  },
+  women: {
+    title: 'Women\'s Perfumes | Wholesale Feminine Fragrances Atlanta',
+    description: 'Wholesale women\'s perfumes and feminine fragrances. Elegant scents for Atlanta retailers. Complete collection from floral to oriental.',
+    keywords: ['women perfume wholesale', 'feminine fragrance bulk', 'ladies perfume Atlanta', 'women scents wholesale'],
+  },
+  men: {
+    title: 'Men\'s Cologne | Wholesale Masculine Fragrances Atlanta',
+    description: 'Wholesale men\'s cologne and masculine fragrances. Bold scents for Atlanta retailers. From fresh to woody collections.',
+    keywords: ['men cologne wholesale', 'masculine fragrance bulk', 'men perfume Atlanta', 'cologne wholesale'],
+  },
+  collection: {
+    title: 'Gift Sets | Wholesale Perfume Collections Atlanta',
+    description: 'Wholesale perfume gift sets and curated collections. Perfect for gifting. Premium packaging for Atlanta retailers.',
+    keywords: ['perfume gift set wholesale', 'fragrance collection bulk', 'perfume box Atlanta', 'gift sets wholesale'],
+  },
+};
+
+// Generate dynamic metadata for each collection
+export async function generateMetadata({ params }: CollectionPageProps): Promise<Metadata> {
+  const meta = collectionMeta[params.slug] || {
+    title: `${params.slug.charAt(0).toUpperCase() + params.slug.slice(1)} Perfumes | Wholesale Fragrances Atlanta`,
+    description: `Wholesale ${params.slug} perfumes and fragrances for Atlanta retailers. Premium quality, competitive pricing.`,
+    keywords: [`${params.slug} perfume wholesale`, 'fragrance bulk Atlanta'],
+  };
+
+  return {
+    title: meta.title,
+    description: meta.description,
+    keywords: meta.keywords,
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      url: `${siteConfig.url}/collections/${params.slug}`,
+      type: 'website',
+      images: [
+        {
+          url: '/images/og-collections.jpg',
+          width: 1200,
+          height: 630,
+          alt: `${params.slug} Perfume Collection - CALRA Atlanta`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: meta.title,
+      description: meta.description,
+    },
+    alternates: {
+      canonical: `${siteConfig.url}/collections/${params.slug}`,
+    },
+  };
+}
+
+// Generate static params for all collection categories
+export async function generateStaticParams() {
+  return [
+    { slug: 'floral' },
+    { slug: 'woody' },
+    { slug: 'oriental' },
+    { slug: 'gourmand' },
+    { slug: 'luxury' },
+    { slug: 'women' },
+    { slug: 'men' },
+    { slug: 'collection' },
+  ];
+}
 
 export default function CollectionPage({ params }: CollectionPageProps) {
-  const [sortBy, setSortBy] = useState('featured');
-  const [gridCols, setGridCols] = useState(3);
-
   // Filter products by collection/category
   const filteredProducts = products.filter(p => p.category === params.slug);
-
-  // If no products match, show all products
   const displayProducts = filteredProducts.length > 0 ? filteredProducts : products;
 
-  // Sort products
-  const sortedProducts = [...displayProducts].sort((a, b) => {
-    switch (sortBy) {
-      case 'price-low':
-        return a.price - b.price;
-      case 'price-high':
-        return b.price - a.price;
-      case 'rating':
-        return b.rating - a.rating;
-      case 'newest':
-        return parseInt(b.id) - parseInt(a.id);
-      default:
-        return 0;
-    }
-  });
+  // Prepare product data for structured data
+  const productListItems = displayProducts.slice(0, 12).map((product) => ({
+    name: product.name,
+    url: `${siteConfig.url}/products/${product.slug}`,
+    image: product.image,
+    price: product.price,
+  }));
+
+  const collectionName = params.slug.charAt(0).toUpperCase() + params.slug.slice(1);
+  
+  const breadcrumbItems = [
+    { name: 'Home', url: siteConfig.url },
+    { name: 'Collections', url: `${siteConfig.url}/collections` },
+    { name: collectionName, url: `${siteConfig.url}/collections/${params.slug}` },
+  ];
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#FAFAFA' }}>
-      <div className="container-luxury py-10">
-        <CollectionHeader slug={params.slug} />
-
-        {/* Filters Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6"
-          style={{ borderBottom: '1px solid #F0F0F0' }}
-        >
-          {/* Results Count */}
-          <p className="text-sm" style={{ color: '#6B6B6B' }}>
-            Showing {sortedProducts.length} {sortedProducts.length === 1 ? 'product' : 'products'}
-          </p>
-
-          {/* Sort & View Options */}
-          <div className="flex items-center gap-4">
-            {/* Sort Dropdown */}
-            <div className="flex items-center gap-2">
-              <SlidersHorizontal size={16} style={{ color: '#6B6B6B' }} />
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="text-sm py-2 px-3 rounded-lg appearance-none cursor-pointer"
-                style={{ 
-                  backgroundColor: '#FFFFFF', 
-                  border: '1px solid #E5E5E5',
-                  color: '#171717',
-                  minWidth: '160px'
-                }}
-              >
-                {sortOptions.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Grid Toggle */}
-            <div 
-              className="hidden md:flex items-center rounded-lg overflow-hidden"
-              style={{ border: '1px solid #E5E5E5' }}
-            >
-              <button
-                onClick={() => setGridCols(3)}
-                className="p-2 transition-colors"
-                style={{ 
-                  backgroundColor: gridCols === 3 ? '#C5B299' : '#FFFFFF',
-                  color: gridCols === 3 ? '#FFFFFF' : '#6B6B6B'
-                }}
-              >
-                <Grid3X3 size={18} />
-              </button>
-              <button
-                onClick={() => setGridCols(4)}
-                className="p-2 transition-colors"
-                style={{ 
-                  backgroundColor: gridCols === 4 ? '#C5B299' : '#FFFFFF',
-                  color: gridCols === 4 ? '#FFFFFF' : '#6B6B6B'
-                }}
-              >
-                <LayoutGrid size={18} />
-              </button>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Products Grid */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className={`grid gap-6 ${
-            gridCols === 4 
-              ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
-              : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-          }`}
-        >
-          {sortedProducts.map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-            >
-              <ProductCard 
-                product={{
-                  id: product.id,
-                  name: product.name,
-                  brand: product.brand,
-                  price: product.price,
-                  image: product.image,
-                  slug: product.slug,
-                  isNew: product.tags?.includes('New Arrival'),
-                  isBestseller: product.tags?.includes('Best seller'),
-                  salePrice: product.originalPrice ? product.price : undefined,
-                  category: product.category,
-                }} 
-              />
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Empty State */}
-        {sortedProducts.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-lg mb-2" style={{ color: '#171717' }}>
-              No products found in this collection
-            </p>
-            <p className="text-sm" style={{ color: '#6B6B6B' }}>
-              Check back soon for new additions
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
+    <>
+      <ItemListJsonLd items={productListItems} name={`CALRA ${collectionName} Collection`} />
+      <BreadcrumbJsonLd items={breadcrumbItems} />
+      <CollectionSlugPageClient slug={params.slug} />
+    </>
   );
 }

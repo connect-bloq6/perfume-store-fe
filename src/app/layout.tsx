@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Darker_Grotesque, Montserrat, Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
@@ -8,6 +8,8 @@ import { CustomCursor } from '@/components/ui/CustomCursor';
 import { MagicEffectsProvider } from '@/components/ui/MagicEffects';
 import { AuthProvider } from '@/components/providers/AuthProvider';
 import { SessionProvider } from '@/components/providers/SessionProvider';
+import { LocalBusinessJsonLd, OrganizationJsonLd, WebsiteJsonLd } from '@/components/seo/JsonLd';
+import { siteConfig } from '@/lib/constants';
 
 const darkerGrotesque = Darker_Grotesque({
   subsets: ['latin'],
@@ -37,10 +39,137 @@ const playfairDisplay = Playfair_Display({
   display: 'swap',
 });
 
+// Viewport configuration
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#F5F1EA' },
+    { media: '(prefers-color-scheme: dark)', color: '#1A1A1A' },
+  ],
+};
+
+// Comprehensive SEO Metadata
 export const metadata: Metadata = {
-  title: 'CALRA | Perfume Store Atlanta',
-  description: 'Crafted for timeless beauty. A collection of artisan perfumes and oils inspired by tradition, crafted with modern elegance.',
-  keywords: ['perfume', 'fragrance', 'oud', 'luxury', 'scent', 'atlanta', 'artisan'],
+  // Basic Meta Tags
+  title: {
+    default: 'CALRA | Wholesale Luxury Perfumes for Atlanta Retailers',
+    template: '%s | CALRA Perfumes Atlanta',
+  },
+  description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  authors: [{ name: 'CALRA Perfumes', url: siteConfig.url }],
+  creator: 'CALRA Luxury Fragrances LLC',
+  publisher: 'CALRA Perfumes',
+  
+  // Canonical URL
+  metadataBase: new URL(siteConfig.url),
+  alternates: {
+    canonical: '/',
+    languages: {
+      'en-US': '/en-US',
+    },
+  },
+  
+  // Open Graph (Facebook, LinkedIn, etc.)
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: siteConfig.url,
+    siteName: siteConfig.business.name,
+    title: 'CALRA | Wholesale Luxury Perfumes for Atlanta Retailers',
+    description: siteConfig.description,
+    images: [
+      {
+        url: '/images/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'CALRA Perfumes - Atlanta\'s Premier Wholesale Fragrance Distributor',
+        type: 'image/jpeg',
+      },
+      {
+        url: '/images/og-image-square.jpg',
+        width: 600,
+        height: 600,
+        alt: 'CALRA Perfumes Logo',
+        type: 'image/jpeg',
+      },
+    ],
+  },
+  
+  // Twitter Card
+  twitter: {
+    card: 'summary_large_image',
+    site: '@calraperfumes',
+    creator: '@calraperfumes',
+    title: 'CALRA | Wholesale Luxury Perfumes for Atlanta Retailers',
+    description: siteConfig.description,
+    images: ['/images/og-image.jpg'],
+  },
+  
+  // Robots & Indexing
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  
+  // Verification for Search Consoles
+  verification: {
+    google: 'your-google-verification-code',
+    yandex: 'your-yandex-verification-code',
+    // Add your actual verification codes here
+  },
+  
+  // App & Icons
+  applicationName: 'CALRA Perfumes',
+  manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/icon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512x512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      {
+        rel: 'mask-icon',
+        url: '/safari-pinned-tab.svg',
+        color: '#C4A77D',
+      },
+    ],
+  },
+  
+  // Additional Meta
+  category: 'shopping',
+  classification: 'Wholesale Perfume & Fragrance Distribution',
+  
+  // Geo targeting for Atlanta
+  other: {
+    'geo.region': siteConfig.geo.region,
+    'geo.placename': siteConfig.geo.placename,
+    'geo.position': siteConfig.geo.position,
+    'ICBM': siteConfig.geo.ICBM,
+    'format-detection': 'telephone=yes',
+    'business:contact_data:street_address': siteConfig.address.streetAddress,
+    'business:contact_data:locality': siteConfig.address.addressLocality,
+    'business:contact_data:region': siteConfig.address.addressRegion,
+    'business:contact_data:postal_code': siteConfig.address.postalCode,
+    'business:contact_data:country_name': 'United States',
+  },
 };
 
 export default function RootLayout({
@@ -50,6 +179,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${darkerGrotesque.variable} ${montserrat.variable} ${inter.variable} ${playfairDisplay.variable}`}>
+      <head>
+        {/* Preconnect to external resources for performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* DNS Prefetch for performance */}
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        
+        {/* Structured Data */}
+        <LocalBusinessJsonLd />
+        <OrganizationJsonLd />
+        <WebsiteJsonLd />
+      </head>
       <body className="bg-cream-200 text-charcoal-800 font-body antialiased">
         <SessionProvider>
           <MagicEffectsProvider>
