@@ -11,7 +11,7 @@ const featuredProducts = [
     brand: 'Essence',
     price: 195,
     image: '/images/products/midnight-rose.jpg',
-    slug: '/products/la-femme-rose',
+    slug: 'la-femme-rose',
     isNew: true,
   },
   {

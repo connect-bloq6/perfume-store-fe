@@ -13,16 +13,17 @@ import {
   Search,
   ChevronDown,
   Clock,
-  User,
   Phone,
   Building,
   X,
-  CheckCircle,
-  AlertCircle,
-  Filter
+  Filter,
+  LogOut,
+  Loader2
 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ContactSubmission } from '@/types';
+import { useAdminAuthStore } from '@/store/adminAuth';
 
 const statusConfig = {
   new: { 
@@ -61,14 +62,36 @@ const subjectLabels: Record<string, string> = {
 };
 
 export default function AdminDashboardClient() {
+  const router = useRouter();
+  const { isAdminAuthenticated, adminEmail, adminLogout } = useAdminAuthStore();
+  
   const [submissions, setSubmissions] = useState<ContactSubmission[]>([]);
   const [filteredSubmissions, setFilteredSubmissions] = useState<ContactSubmission[]>([]);
   const [loading, setLoading] = useState(true);
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const [selectedSubmission, setSelectedSubmission] = useState<ContactSubmission | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [showFilters, setShowFilters] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  // Check authentication
+  useEffect(() => {
+    // Small delay to allow hydration
+    const timer = setTimeout(() => {
+      if (!isAdminAuthenticated) {
+        router.push('/admin/login');
+      }
+      setCheckingAuth(false);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [isAdminAuthenticated, router]);
+
+  const handleLogout = () => {
+    adminLogout();
+    router.push('/admin/login');
+  };
 
   const fetchSubmissions = useCallback(async () => {
     try {
@@ -86,8 +109,10 @@ export default function AdminDashboardClient() {
   }, []);
 
   useEffect(() => {
-    fetchSubmissions();
-  }, [fetchSubmissions]);
+    if (isAdminAuthenticated) {
+      fetchSubmissions();
+    }
+  }, [fetchSubmissions, isAdminAuthenticated]);
 
   useEffect(() => {
     let result = submissions;
@@ -194,6 +219,30 @@ export default function AdminDashboardClient() {
     archived: submissions.filter(s => s.status === 'archived').length,
   };
 
+  // Show loading while checking auth
+  if (checkingAuth) {
+    return (
+      <div 
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: '#F5F5F5' }}
+      >
+        <div className="text-center">
+          <Loader2 
+            size={32} 
+            className="animate-spin mx-auto mb-4"
+            style={{ color: '#917B5F' }}
+          />
+          <p style={{ color: '#6B6B6B' }}>Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render if not authenticated
+  if (!isAdminAuthenticated) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F5F5' }}>
       {/* Header */}
@@ -224,6 +273,14 @@ export default function AdminDashboardClient() {
             </div>
             
             <div className="flex items-center gap-3">
+              {/* Admin Email */}
+              <span 
+                className="hidden sm:block text-sm"
+                style={{ color: '#6B6B6B' }}
+              >
+                {adminEmail}
+              </span>
+              
               <motion.button
                 onClick={handleRefresh}
                 disabled={refreshing}
@@ -231,6 +288,7 @@ export default function AdminDashboardClient() {
                 style={{ backgroundColor: '#F9F9F9' }}
                 whileHover={{ backgroundColor: '#F0F0F0' }}
                 whileTap={{ scale: 0.95 }}
+                title="Refresh"
               >
                 <RefreshCw 
                   size={18} 
@@ -238,13 +296,25 @@ export default function AdminDashboardClient() {
                   style={{ color: '#6B6B6B' }}
                 />
               </motion.button>
+              
               <Link
                 href="/"
-                className="text-sm px-4 py-2 rounded-lg transition-colors"
-                style={{ backgroundColor: '#917B5F', color: '#FFFFFF' }}
+                className="hidden sm:block text-sm px-4 py-2 rounded-lg transition-colors"
+                style={{ backgroundColor: '#F9F9F9', color: '#6B6B6B' }}
               >
-                Back to Site
+                View Site
               </Link>
+              
+              <motion.button
+                onClick={handleLogout}
+                className="flex items-center gap-2 text-sm px-4 py-2 rounded-lg transition-colors"
+                style={{ backgroundColor: '#FEF2F2', color: '#DC2626' }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <LogOut size={16} />
+                <span className="hidden sm:inline">Logout</span>
+              </motion.button>
             </div>
           </div>
         </div>
