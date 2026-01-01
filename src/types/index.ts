@@ -142,3 +142,19 @@ export interface ApiError {
   statusCode: number;
 }
 
+/**
+ * Contact form submission types
+ */
+export interface ContactSubmission {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  subject: string;
+  message: string;
+  status: 'new' | 'read' | 'replied' | 'archived';
+  createdAt: string;
+  updatedAt: string;
+}
+

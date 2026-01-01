@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { MessageCircle, Headphones, MapPin, Phone, ChevronDown, ChevronRight, HelpCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MessageCircle, Headphones, MapPin, Phone, ChevronDown, ChevronRight, HelpCircle, Send, User, Mail, Building, Loader2, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -250,9 +250,73 @@ const faqItems = [
   },
 ];
 
+const subjectOptions = [
+  { value: 'general', label: 'General Inquiry' },
+  { value: 'wholesale', label: 'Wholesale Partnership' },
+  { value: 'order', label: 'Order Support' },
+  { value: 'returns', label: 'Returns & Exchanges' },
+  { value: 'consultation', label: 'Fragrance Consultation' },
+  { value: 'other', label: 'Other' },
+];
+
 export default function ContactPageClient() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [showAllFaqs, setShowAllFaqs] = useState(false);
+  
+  // Contact form state
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    subject: 'general',
+    message: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitMessage, setSubmitMessage] = useState('');
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitStatus('success');
+        setSubmitMessage('Thank you for your message! We\'ll get back to you within 24 hours.');
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          subject: 'general',
+          message: '',
+        });
+      } else {
+        setSubmitStatus('error');
+        setSubmitMessage(data.error || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      setSubmitStatus('error');
+      setSubmitMessage('Failed to send message. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const displayedFaqs = showAllFaqs ? faqItems : faqItems.slice(0, 6);
   const leftFaqs = displayedFaqs.filter((_, i) => i % 2 === 0);
@@ -434,6 +498,403 @@ export default function ContactPageClient() {
                 )}
               </motion.div>
             ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Contact Form Section */}
+      <section className="py-16">
+        <div className="container-luxury">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="rounded-3xl overflow-hidden"
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #F0F0F0' }}
+          >
+            <div className="grid lg:grid-cols-5">
+              {/* Left side - Info Panel */}
+              <div 
+                className="lg:col-span-2 p-8 md:p-10 flex flex-col justify-between"
+                style={{ backgroundColor: '#917B5F' }}
+              >
+                <div>
+                  <div 
+                    className="inline-block px-4 py-1.5 rounded-full mb-6"
+                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
+                  >
+                    <span className="text-xs font-medium text-white/90">
+                      Send us a message
+                    </span>
+                  </div>
+                  
+                  <h2 
+                    className="font-playfair mb-4"
+                    style={{
+                      fontWeight: 400,
+                      fontSize: '32px',
+                      lineHeight: '40px',
+                      color: '#FFFFFF'
+                    }}
+                  >
+                    Let&apos;s start a conversation
+                  </h2>
+                  
+                  <p 
+                    className="mb-8"
+                    style={{ 
+                      color: 'rgba(255, 255, 255, 0.8)',
+                      fontSize: '15px',
+                      lineHeight: '24px'
+                    }}
+                  >
+                    Whether you&apos;re interested in wholesale partnerships, have questions about our fragrances, or need assistance with an order, we&apos;re here to help.
+                  </p>
+
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div 
+                        className="w-10 h-10 rounded-full flex items-center justify-center"
+                        style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
+                      >
+                        <Mail size={18} className="text-white/90" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-white/60">Email us at</p>
+                        <p className="text-white text-sm">support@calraperfumes.com</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3">
+                      <div 
+                        className="w-10 h-10 rounded-full flex items-center justify-center"
+                        style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
+                      >
+                        <Phone size={18} className="text-white/90" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-white/60">Call us at</p>
+                        <p className="text-white text-sm">+1 (404) 555-8932</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Decorative element */}
+                <div className="hidden lg:block mt-12">
+                  <div className="flex gap-2">
+                    {[...Array(5)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="w-2 h-2 rounded-full"
+                        style={{ backgroundColor: 'rgba(255, 255, 255, 0.3)' }}
+                        animate={{
+                          scale: [1, 1.5, 1],
+                          opacity: [0.3, 0.8, 0.3],
+                        }}
+                        transition={{
+                          duration: 2,
+                          delay: i * 0.3,
+                          repeat: Infinity,
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Right side - Form */}
+              <div className="lg:col-span-3 p-8 md:p-10">
+                <AnimatePresence mode="wait">
+                  {submitStatus === 'success' ? (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      className="h-full flex flex-col items-center justify-center text-center py-12"
+                    >
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+                        className="w-16 h-16 rounded-full flex items-center justify-center mb-6"
+                        style={{ backgroundColor: '#E8F5E9' }}
+                      >
+                        <CheckCircle size={32} style={{ color: '#4CAF50' }} />
+                      </motion.div>
+                      <h3 
+                        className="font-playfair text-2xl mb-3"
+                        style={{ color: '#171717' }}
+                      >
+                        Message Sent!
+                      </h3>
+                      <p 
+                        className="mb-6 max-w-sm"
+                        style={{ color: '#6B6B6B' }}
+                      >
+                        {submitMessage}
+                      </p>
+                      <button
+                        onClick={() => setSubmitStatus('idle')}
+                        className="text-sm font-medium hover:underline"
+                        style={{ color: '#917B5F' }}
+                      >
+                        Send another message
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <motion.form 
+                      onSubmit={handleSubmit}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="space-y-5"
+                    >
+                      {/* Name Fields */}
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                          <label 
+                            htmlFor="firstName" 
+                            className="block text-sm mb-2"
+                            style={{ color: '#6B6B6B' }}
+                          >
+                            First Name <span style={{ color: '#C4A77D' }}>*</span>
+                          </label>
+                          <div className="relative">
+                            <User 
+                              size={18} 
+                              className="absolute left-3.5 top-1/2 -translate-y-1/2"
+                              style={{ color: '#A8A8A8' }}
+                            />
+                            <input
+                              type="text"
+                              id="firstName"
+                              name="firstName"
+                              value={formData.firstName}
+                              onChange={handleInputChange}
+                              required
+                              placeholder="John"
+                              className="w-full pl-11 pr-4 py-3 rounded-xl text-sm transition-all duration-200"
+                              style={{ 
+                                backgroundColor: '#F9F9F9',
+                                border: '1px solid #E8E8E8',
+                                color: '#171717',
+                              }}
+                            />
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <label 
+                            htmlFor="lastName" 
+                            className="block text-sm mb-2"
+                            style={{ color: '#6B6B6B' }}
+                          >
+                            Last Name <span style={{ color: '#C4A77D' }}>*</span>
+                          </label>
+                          <div className="relative">
+                            <User 
+                              size={18} 
+                              className="absolute left-3.5 top-1/2 -translate-y-1/2"
+                              style={{ color: '#A8A8A8' }}
+                            />
+                            <input
+                              type="text"
+                              id="lastName"
+                              name="lastName"
+                              value={formData.lastName}
+                              onChange={handleInputChange}
+                              required
+                              placeholder="Doe"
+                              className="w-full pl-11 pr-4 py-3 rounded-xl text-sm transition-all duration-200"
+                              style={{ 
+                                backgroundColor: '#F9F9F9',
+                                border: '1px solid #E8E8E8',
+                                color: '#171717',
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Email and Phone */}
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                          <label 
+                            htmlFor="email" 
+                            className="block text-sm mb-2"
+                            style={{ color: '#6B6B6B' }}
+                          >
+                            Email <span style={{ color: '#C4A77D' }}>*</span>
+                          </label>
+                          <div className="relative">
+                            <Mail 
+                              size={18} 
+                              className="absolute left-3.5 top-1/2 -translate-y-1/2"
+                              style={{ color: '#A8A8A8' }}
+                            />
+                            <input
+                              type="email"
+                              id="email"
+                              name="email"
+                              value={formData.email}
+                              onChange={handleInputChange}
+                              required
+                              placeholder="john@example.com"
+                              className="w-full pl-11 pr-4 py-3 rounded-xl text-sm transition-all duration-200"
+                              style={{ 
+                                backgroundColor: '#F9F9F9',
+                                border: '1px solid #E8E8E8',
+                                color: '#171717',
+                              }}
+                            />
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <label 
+                            htmlFor="phone" 
+                            className="block text-sm mb-2"
+                            style={{ color: '#6B6B6B' }}
+                          >
+                            Phone (Optional)
+                          </label>
+                          <div className="relative">
+                            <Phone 
+                              size={18} 
+                              className="absolute left-3.5 top-1/2 -translate-y-1/2"
+                              style={{ color: '#A8A8A8' }}
+                            />
+                            <input
+                              type="tel"
+                              id="phone"
+                              name="phone"
+                              value={formData.phone}
+                              onChange={handleInputChange}
+                              placeholder="+1 (555) 000-0000"
+                              className="w-full pl-11 pr-4 py-3 rounded-xl text-sm transition-all duration-200"
+                              style={{ 
+                                backgroundColor: '#F9F9F9',
+                                border: '1px solid #E8E8E8',
+                                color: '#171717',
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Subject */}
+                      <div>
+                        <label 
+                          htmlFor="subject" 
+                          className="block text-sm mb-2"
+                          style={{ color: '#6B6B6B' }}
+                        >
+                          Subject <span style={{ color: '#C4A77D' }}>*</span>
+                        </label>
+                        <div className="relative">
+                          <Building 
+                            size={18} 
+                            className="absolute left-3.5 top-1/2 -translate-y-1/2"
+                            style={{ color: '#A8A8A8' }}
+                          />
+                          <select
+                            id="subject"
+                            name="subject"
+                            value={formData.subject}
+                            onChange={handleInputChange}
+                            required
+                            className="w-full pl-11 pr-4 py-3 rounded-xl text-sm transition-all duration-200 appearance-none cursor-pointer"
+                            style={{ 
+                              backgroundColor: '#F9F9F9',
+                              border: '1px solid #E8E8E8',
+                              color: '#171717',
+                            }}
+                          >
+                            {subjectOptions.map(option => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                          <ChevronDown 
+                            size={18} 
+                            className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+                            style={{ color: '#A8A8A8' }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Message */}
+                      <div>
+                        <label 
+                          htmlFor="message" 
+                          className="block text-sm mb-2"
+                          style={{ color: '#6B6B6B' }}
+                        >
+                          Message <span style={{ color: '#C4A77D' }}>*</span>
+                        </label>
+                        <textarea
+                          id="message"
+                          name="message"
+                          value={formData.message}
+                          onChange={handleInputChange}
+                          required
+                          rows={5}
+                          placeholder="Tell us how we can help you..."
+                          className="w-full px-4 py-3 rounded-xl text-sm transition-all duration-200 resize-none"
+                          style={{ 
+                            backgroundColor: '#F9F9F9',
+                            border: '1px solid #E8E8E8',
+                            color: '#171717',
+                          }}
+                        />
+                      </div>
+
+                      {/* Error Message */}
+                      {submitStatus === 'error' && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="p-3 rounded-lg text-sm"
+                          style={{ backgroundColor: '#FEF2F2', color: '#DC2626' }}
+                        >
+                          {submitMessage}
+                        </motion.div>
+                      )}
+
+                      {/* Submit Button */}
+                      <div className="pt-2">
+                        <motion.button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-sm font-medium transition-all duration-300"
+                          style={{ 
+                            backgroundColor: '#917B5F',
+                            color: '#FFFFFF',
+                            opacity: isSubmitting ? 0.7 : 1,
+                          }}
+                          whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                          whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <Loader2 size={18} className="animate-spin" />
+                              Sending...
+                            </>
+                          ) : (
+                            <>
+                              <Send size={18} />
+                              Send Message
+                            </>
+                          )}
+                        </motion.button>
+                      </div>
+                    </motion.form>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>

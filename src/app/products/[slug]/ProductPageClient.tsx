@@ -3,9 +3,13 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Star, Share2, Heart, Minus, Plus, ShoppingCart, ChevronRight } from 'lucide-react';
+import { Star, Share2, Heart, Minus, Plus, ShoppingCart, ChevronRight, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { reviews, ratingBreakdown, Product } from '@/data/products';
+import { useAuthStore } from '@/store/auth';
+import { useCartStore } from '@/store/cart';
+import { useWishlistStore } from '@/store/wishlist';
+import { useToastStore } from '@/components/ui/Toast';
 
 interface ProductPageClientProps {
   product: Product;
@@ -16,8 +20,64 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
   const [selectedVolume, setSelectedVolume] = useState(1);
   const [selectedColor, setSelectedColor] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
+
+  // Auth store
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const openAuthModal = useAuthStore((state) => state.openAuthModal);
+  
+  // Cart store
+  const addItem = useCartStore((state) => state.addItem);
+  
+  // Wishlist store
+  const wishlistItems = useWishlistStore((state) => state.items);
+  const addToWishlist = useWishlistStore((state) => state.addItem);
+  const removeFromWishlist = useWishlistStore((state) => state.removeItem);
+  const isInWishlist = wishlistItems.includes(product.id);
+  
+  // Toast
+  const showToast = useToastStore((state) => state.showToast);
 
   const totalReviews = ratingBreakdown.reduce((sum, r) => sum + r.count, 0);
+
+  const handleAddToCart = () => {
+    if (!isAuthenticated) {
+      openAuthModal();
+      return;
+    }
+    
+    const selectedVol = product.volumes[selectedVolume];
+    const price = selectedVol?.price || product.price;
+    
+    addItem({
+      productId: product.id,
+      name: product.name,
+      image: product.image,
+      size: selectedVol?.size || '50ml',
+      price: price,
+      quantity: quantity,
+    });
+    
+    setIsAddedToCart(true);
+    showToast(`${product.name} added to cart!`, 'success');
+    
+    setTimeout(() => setIsAddedToCart(false), 2000);
+  };
+
+  const handleWishlist = () => {
+    if (!isAuthenticated) {
+      openAuthModal();
+      return;
+    }
+    
+    if (isInWishlist) {
+      removeFromWishlist(product.id);
+      showToast(`${product.name} removed from wishlist`, 'remove');
+    } else {
+      addToWishlist(product.id);
+      showToast(`${product.name} added to wishlist!`, 'success');
+    }
+  };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FAFAFA' }}>
@@ -85,10 +145,18 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
                   <Share2 size={18} style={{ color: '#6B6B6B' }} />
                 </button>
                 <button 
-                  className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-                  aria-label="Add to wishlist"
+                  onClick={handleWishlist}
+                  className="p-2 rounded-full transition-all"
+                  style={{ 
+                    backgroundColor: isInWishlist ? '#FEE2E2' : 'transparent',
+                  }}
+                  aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
                 >
-                  <Heart size={18} style={{ color: '#6B6B6B' }} />
+                  <Heart 
+                    size={18} 
+                    fill={isInWishlist ? '#DC2626' : 'none'}
+                    style={{ color: isInWishlist ? '#DC2626' : '#6B6B6B' }} 
+                  />
                 </button>
               </div>
             </div>
@@ -231,11 +299,27 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
                 </button>
               </div>
               <button
-                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-medium transition-opacity hover:opacity-90"
-                style={{ backgroundColor: '#C4A77D', color: '#FFFFFF' }}
+                onClick={handleAddToCart}
+                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-medium transition-all hover:opacity-90"
+                style={{ 
+                  backgroundColor: isAddedToCart ? '#4CAF50' : '#C4A77D', 
+                  color: '#FFFFFF',
+                  boxShadow: isAddedToCart 
+                    ? '0 2px 6px rgba(76, 175, 80, 0.25)' 
+                    : '0 2px 6px rgba(196, 167, 125, 0.25)'
+                }}
               >
-                <ShoppingCart size={18} aria-hidden="true" />
-                Add to Cart
+                {isAddedToCart ? (
+                  <>
+                    <Check size={18} aria-hidden="true" />
+                    Added to Cart
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart size={18} aria-hidden="true" />
+                    Add to Cart
+                  </>
+                )}
               </button>
             </div>
 
