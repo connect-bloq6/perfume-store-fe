@@ -51,7 +51,7 @@ export function ProductInfo({ slug }: ProductInfoProps) {
       </p>
 
       {/* Size Selection */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <p className="text-sm text-white mb-3">Size</p>
         <div className="flex gap-3">
           {sizes.map((size) => (
@@ -68,7 +68,7 @@ export function ProductInfo({ slug }: ProductInfoProps) {
             </button>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* Quantity */}
       <div className="mb-8">

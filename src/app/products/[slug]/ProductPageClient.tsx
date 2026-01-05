@@ -242,7 +242,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
             </div>
 
             {/* Collection/Color Selection */}
-            <div className="mb-6">
+            {/* <div className="mb-6">
               <p className="text-sm font-medium mb-3" style={{ color: '#171717' }}>
                 Collection: <span style={{ color: '#6B6B6B' }}>{product.colors[selectedColor]?.name}</span>
               </p>
@@ -268,7 +268,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
                   </button>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             {/* Quantity and Add to Cart */}
             <div className="flex gap-4 mb-8">

@@ -13,6 +13,7 @@ const bestsellers = [
     price: 375,
     image: '/images/Landing Page/Background/Desert Rose.png',
     badge: 'Trending',
+    slug: 'la-femme-rose',
   },
   {
     id: 2,
@@ -20,6 +21,7 @@ const bestsellers = [
     price: 375,
     image: '/images/Landing Page/Background/Mysterious.png',
     badge: null,
+    slug: 'mysterious',
   },
   {
     id: 3,
@@ -27,6 +29,7 @@ const bestsellers = [
     price: 375,
     image: '/images/Landing Page/Background/Black_Phoenix.png',
     badge: null,
+    slug: 'black-phoenix',
   },
 ];
 
@@ -122,7 +125,7 @@ export function Bestsellers() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="w-full"
             >
-              <Link href={`/products/${product.name.toLowerCase().replace(' ', '-')}`}>
+              <Link href={`/products/${product.slug}`}>
                 <div className="group">
                   {/* Outer Border - Responsive sizing */}
                   <div
