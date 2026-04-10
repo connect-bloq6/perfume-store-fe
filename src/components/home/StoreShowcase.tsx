@@ -81,7 +81,7 @@ export function StoreShowcase() {
             >
               <div className="relative h-full min-h-[480px] rounded-2xl overflow-hidden">
                 <Image
-                  src="/images/Landing Page/Background/Shelf.png"
+                  src="/images/Landing Page/Background/Shelf Image.png"
                   alt="Perfume shelf display"
                   fill
                   className="object-cover"
@@ -159,7 +159,7 @@ export function StoreShowcase() {
             >
               <div className="relative w-full h-[320px] rounded-2xl overflow-hidden">
                 <Image
-                  src="/images/Landing Page/Background/Single.png"
+                  src="/images/Landing Page/Background/Single-Bottle.png"
                   alt="Imperial Gold Elixir perfume"
                   fill
                   className="object-contain rounded-2xl"
@@ -179,7 +179,7 @@ export function StoreShowcase() {
               >
                 <div className="relative h-full min-h-[200px] rounded-2xl overflow-hidden">
                   <Image
-                    src="/images/Landing Page/Background/Three.png"
+                    src="/images/Landing Page/Background/three-Bottle.png"
                     alt="Three perfumes collection"
                     fill
                     className="object-cover"
@@ -258,7 +258,7 @@ export function StoreShowcase() {
             >
               <div className="relative w-full h-[260px] rounded-2xl overflow-hidden">
                 <Image
-                  src="/images/Landing Page/Background/Single.png"
+                  src="/images/Landing Page/Background/Single-Bottle.png"
                   alt="Imperial Gold Elixir perfume"
                   fill
                   className="object-contain rounded-2xl"

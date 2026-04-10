@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { getProductBySlug, getRelatedProducts } from '@/data/products';
+import { resolveCanonicalProductSlug } from '@/lib/product-redirects';
 import { ProductJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import { siteConfig } from '@/lib/constants';
 import ProductPageClient from './ProductPageClient';
@@ -11,6 +12,11 @@ interface ProductPageProps {
 
 // Generate dynamic metadata for each product
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+  const canonicalSlug = resolveCanonicalProductSlug(params.slug);
+  if (canonicalSlug !== params.slug) {
+    permanentRedirect(`/products/${canonicalSlug}`);
+  }
+
   const product = getProductBySlug(params.slug);
   
   if (!product) {
@@ -79,6 +85,11 @@ export async function generateStaticParams() {
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
+  const canonicalSlug = resolveCanonicalProductSlug(params.slug);
+  if (canonicalSlug !== params.slug) {
+    permanentRedirect(`/products/${canonicalSlug}`);
+  }
+
   const product = getProductBySlug(params.slug);
   
   if (!product) {

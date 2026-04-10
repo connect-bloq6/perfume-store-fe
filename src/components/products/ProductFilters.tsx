@@ -58,7 +58,12 @@ function productMatchesFragranceFamily(product: typeof products[0], familyValue:
 
 // Helper function to check if a product has a specific size
 function productMatchesSize(product: typeof products[0], sizeValue: string): boolean {
-  return product.volumes.some(v => v.size.includes(sizeValue));
+  return product.volumes.some((v) => {
+    if (v.size.includes(sizeValue)) return true;
+    // ~100ml retail size is often labeled 3.4 fl oz
+    if (sizeValue === '100ml' && /3\.4\s*oz/i.test(v.size)) return true;
+    return false;
+  });
 }
 
 // Helper function to check if a product is in a price range

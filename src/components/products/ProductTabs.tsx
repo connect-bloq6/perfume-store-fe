@@ -62,7 +62,7 @@ export function ProductTabs() {
               </ul>
             </div>
             <div>
-              <h4 className="text-gold-500 font-display text-lg mb-3">Heart Notes</h4>
+              <h4 className="text-gold-500 font-display text-lg mb-3">Middle Notes</h4>
               <ul className="space-y-2 text-noir-300">
                 <li>Bulgarian Rose</li>
                 <li>Jasmine Absolute</li>

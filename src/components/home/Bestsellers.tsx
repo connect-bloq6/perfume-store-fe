@@ -13,7 +13,7 @@ const bestsellers = [
     price: 375,
     image: '/images/Landing Page/Background/Desert Rose.png',
     badge: 'Trending',
-    slug: 'la-femme-rose',
+    slug: 'desert-rose',
   },
   {
     id: 2,

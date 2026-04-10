@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Star, Share2, Heart, Minus, Plus, ShoppingCart, ChevronRight, Check } from 'lucide-react';
@@ -16,8 +16,18 @@ interface ProductPageClientProps {
   relatedProducts: Product[];
 }
 
+function defaultVolumeIndex(length: number) {
+  return length > 1 ? 1 : 0;
+}
+
 export default function ProductPageClient({ product, relatedProducts }: ProductPageClientProps) {
-  const [selectedVolume, setSelectedVolume] = useState(1);
+  const [selectedVolume, setSelectedVolume] = useState(() =>
+    defaultVolumeIndex(product.volumes.length)
+  );
+
+  useEffect(() => {
+    setSelectedVolume(defaultVolumeIndex(product.volumes.length));
+  }, [product.id, product.volumes.length]);
   const [selectedColor, setSelectedColor] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
@@ -53,7 +63,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
       productId: product.id,
       name: product.name,
       image: product.image,
-      size: selectedVol?.size || '50ml',
+      size: selectedVol?.size || product.volumes[0]?.size || '—',
       price: price,
       quantity: quantity,
     });
@@ -220,25 +230,27 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
               <p className="text-sm font-medium mb-3" style={{ color: '#171717' }}>
                 Volume: <span style={{ color: '#6B6B6B' }}>{product.volumes[selectedVolume]?.size}</span>
               </p>
-              <div className="flex gap-2" role="radiogroup" aria-label="Select volume">
-                {product.volumes.map((vol, index) => (
-                  <button
-                    key={vol.size}
-                    onClick={() => setSelectedVolume(index)}
-                    className="px-4 py-2 text-sm rounded-lg transition-all"
-                    style={{
-                      backgroundColor: selectedVolume === index ? '#3D3D3D' : '#FFFFFF',
-                      color: selectedVolume === index ? '#FFFFFF' : '#171717',
-                      border: '1px solid',
-                      borderColor: selectedVolume === index ? '#3D3D3D' : '#E5E5E5',
-                    }}
-                    role="radio"
-                    aria-checked={selectedVolume === index}
-                  >
-                    {vol.size}
-                  </button>
-                ))}
-              </div>
+              {product.volumes.length > 1 && (
+                <div className="flex gap-2" role="radiogroup" aria-label="Select volume">
+                  {product.volumes.map((vol, index) => (
+                    <button
+                      key={vol.size}
+                      onClick={() => setSelectedVolume(index)}
+                      className="px-4 py-2 text-sm rounded-lg transition-all"
+                      style={{
+                        backgroundColor: selectedVolume === index ? '#3D3D3D' : '#FFFFFF',
+                        color: selectedVolume === index ? '#FFFFFF' : '#171717',
+                        border: '1px solid',
+                        borderColor: selectedVolume === index ? '#3D3D3D' : '#E5E5E5',
+                      }}
+                      role="radio"
+                      aria-checked={selectedVolume === index}
+                    >
+                      {vol.size}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Collection/Color Selection */}
@@ -334,8 +346,11 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
               </p>
               <ul className="space-y-2 text-sm" style={{ color: '#6B6B6B' }}>
                 <li>• <strong>Top Notes:</strong> {product.notes.top}</li>
-                <li>• <strong>Heart Notes:</strong> {product.notes.heart}</li>
+                <li>• <strong>Middle Notes:</strong> {product.notes.heart}</li>
                 <li>• <strong>Base Notes:</strong> {product.notes.base}</li>
+                {product.profile && (
+                  <li>• <strong>Profile:</strong> {product.profile}</li>
+                )}
                 <li>• <strong>Longevity:</strong> {product.longevity}</li>
               </ul>
             </div>
