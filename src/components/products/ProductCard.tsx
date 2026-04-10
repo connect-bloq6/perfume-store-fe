@@ -223,12 +223,12 @@ export function ProductCard({ product }: ProductCardProps) {
             
             {/* Price */}
             <div className="flex items-center gap-1 mb-0.5">
-              <span 
+              {/* <span 
                 className="text-[9px] line-through"
                 style={{ color: '#9B9B9B' }}
               >
                 ${originalPrice}
-              </span>
+              </span> */}
               <span 
                 className="text-xs font-semibold"
                 style={{ color: '#4A3D2A' }}

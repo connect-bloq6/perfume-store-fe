@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -26,10 +26,14 @@ const sortOptions = [
   { id: 'rating', name: 'Best Rating' },
 ];
 
+const INITIAL_VISIBLE = 9;
+const LOAD_MORE_STEP = 6;
+
 export default function CollectionsPageClient() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [sortBy, setSortBy] = useState('featured');
   const [gridCols, setGridCols] = useState(4);
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
 
   // Filter products by category
   const filteredProducts = activeCategory === 'all' 
@@ -51,6 +55,13 @@ export default function CollectionsPageClient() {
         return 0;
     }
   });
+
+  const displayedProducts = sortedProducts.slice(0, visibleCount);
+  const hasMore = sortedProducts.length > visibleCount;
+
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE);
+  }, [activeCategory, sortBy]);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FAFAFA' }}>
@@ -194,10 +205,10 @@ export default function CollectionsPageClient() {
 
         {/* Results Count */}
         <p className="text-sm mb-6" style={{ color: '#6B6B6B' }}>
-          Showing {Math.min(sortedProducts.length, 9)} of {sortedProducts.length} products
+          Showing {displayedProducts.length} of {sortedProducts.length} products
         </p>
 
-        {/* Products Grid - Limited to 9 products, 3 per row - Compact cards */}
+        {/* Products grid — first page + load more */}
         <motion.div
           id="products-grid"
           initial={{ opacity: 0 }}
@@ -206,7 +217,7 @@ export default function CollectionsPageClient() {
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-5 max-w-5xl mx-auto"
           role="tabpanel"
         >
-          {sortedProducts.slice(0, 9).map((product, index) => (
+          {displayedProducts.map((product, index) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
@@ -251,10 +262,15 @@ export default function CollectionsPageClient() {
           </div>
         )}
 
-        {/* Load More (placeholder) */}
-        {sortedProducts.length >= 6 && (
+        {hasMore && (
           <div className="flex justify-center mt-12">
             <button
+              type="button"
+              onClick={() =>
+                setVisibleCount((c) =>
+                  Math.min(c + LOAD_MORE_STEP, sortedProducts.length)
+                )
+              }
               className="px-8 py-3 rounded-full text-sm font-medium transition-colors hover:bg-gray-50"
               style={{ border: '1px solid #E5E5E5', color: '#171717' }}
             >
@@ -265,7 +281,7 @@ export default function CollectionsPageClient() {
       </div>
 
       {/* Featured Categories Section */}
-      <section className="py-16" style={{ backgroundColor: '#F5F1EA' }}>
+      {/* <section className="py-16" style={{ backgroundColor: '#F5F1EA' }}>
         <div className="container-luxury">
           <h2 
             className="font-playfair text-center mb-10"
@@ -320,7 +336,7 @@ export default function CollectionsPageClient() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
