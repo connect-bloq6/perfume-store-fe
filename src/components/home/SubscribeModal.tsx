@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Sparkles, Check, Gift, Bell, Tag } from 'lucide-react';
@@ -14,25 +14,47 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (!isOpen) {
+      setSubmitError('');
+      setIsSuccess(false);
+      setEmail('');
+    }
+  }, [isOpen]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!email.trim()) return;
 
+    setSubmitError('');
     setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      const data = await response.json();
+
+      if (!data.success) {
+        setSubmitError(data.error || 'Something went wrong. Please try again.');
+        return;
+      }
+
       setIsSuccess(true);
-      
-      // Reset after showing success
       setTimeout(() => {
         onClose();
         setIsSuccess(false);
         setEmail('');
       }, 2500);
-    }, 1000);
+    } catch {
+      setSubmitError('Failed to subscribe. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -146,6 +168,11 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
 
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-4">
+                      {submitError ? (
+                        <p className="text-sm text-center" style={{ color: '#B91C1C' }}>
+                          {submitError}
+                        </p>
+                      ) : null}
                       <div className="relative">
                         <Mail
                           size={18}

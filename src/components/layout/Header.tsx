@@ -10,6 +10,7 @@ import { useAuthStore } from '@/store/auth';
 import { useCartStore } from '@/store/cart';
 import { useToastStore } from '@/components/ui/Toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import { createClient } from '@/lib/supabase/client';
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -67,10 +68,16 @@ export function Header() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     const userName = user?.name || 'User';
-    logout();
     setIsUserMenuOpen(false);
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+    } catch {
+      /* missing env or network; still clear local state */
+    }
+    logout();
     showToast(`Goodbye, ${userName}! You've been signed out.`, 'logout');
   };
 

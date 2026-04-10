@@ -7,7 +7,6 @@ import { PageLoader } from '@/components/ui/PageLoader';
 import { CustomCursor } from '@/components/ui/CustomCursor';
 import { MagicEffectsProvider } from '@/components/ui/MagicEffects';
 import { AuthProvider } from '@/components/providers/AuthProvider';
-import { SessionProvider } from '@/components/providers/SessionProvider';
 import { LocalBusinessJsonLd, OrganizationJsonLd, WebsiteJsonLd } from '@/components/seo/JsonLd';
 import { siteConfig } from '@/lib/constants';
 
@@ -186,17 +185,15 @@ export default function RootLayout({
         <WebsiteJsonLd />
       </head>
       <body className="bg-cream-200 text-charcoal-800 font-body antialiased">
-        <SessionProvider>
-          <MagicEffectsProvider>
-            <AuthProvider>
-              <PageLoader />
-              <CustomCursor />
-              <Header />
-              <main>{children}</main>
-              <Footer />
-            </AuthProvider>
-          </MagicEffectsProvider>
-        </SessionProvider>
+        <MagicEffectsProvider>
+          <AuthProvider>
+            <PageLoader />
+            <CustomCursor />
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </AuthProvider>
+        </MagicEffectsProvider>
       </body>
     </html>
   );

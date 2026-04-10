@@ -1,51 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
-import { ContactSubmission } from '@/types';
+import { createServiceClient } from '@/lib/supabase/service';
+import { rowToSubmission, type ContactSubmissionRow } from '@/lib/supabase/contact-mapper';
 
-const DATA_FILE = path.join(process.cwd(), 'src/data/contact-submissions.json');
-
-// Ensure data file exists
-async function ensureDataFile() {
-  try {
-    await fs.access(DATA_FILE);
-  } catch {
-    await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
-    await fs.writeFile(DATA_FILE, JSON.stringify([], null, 2));
-  }
-}
-
-// Read submissions from file
-async function getSubmissions(): Promise<ContactSubmission[]> {
-  await ensureDataFile();
-  const data = await fs.readFile(DATA_FILE, 'utf-8');
-  return JSON.parse(data);
-}
-
-// Write submissions to file
-async function saveSubmissions(submissions: ContactSubmission[]): Promise<void> {
-  await ensureDataFile();
-  await fs.writeFile(DATA_FILE, JSON.stringify(submissions, null, 2));
-}
-
-// Generate unique ID
-function generateId(): string {
-  return `contact_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+function serviceUnavailable() {
+  return NextResponse.json(
+    {
+      success: false,
+      error:
+        'Contact storage is not configured. Add SUPABASE_SERVICE_ROLE_KEY and run the SQL in supabase/migrations/001_initial.sql.',
+    },
+    { status: 503 }
+  );
 }
 
 // GET - Fetch all contact submissions
 export async function GET() {
   try {
-    const submissions = await getSubmissions();
-    // Sort by newest first
-    submissions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    return NextResponse.json({ success: true, data: submissions });
-  } catch (error) {
-    console.error('Error fetching contact submissions:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch submissions' },
-      { status: 500 }
-    );
+    const supabase = createServiceClient();
+    const { data, error } = await supabase
+      .from('contact_submissions')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Supabase contact list error:', error);
+      return NextResponse.json(
+        { success: false, error: 'Failed to fetch submissions' },
+        { status: 500 }
+      );
+    }
+
+    const rows = (data ?? []) as ContactSubmissionRow[];
+    return NextResponse.json({
+      success: true,
+      data: rows.map(rowToSubmission),
+    });
+  } catch (e) {
+    console.error('Contact GET:', e);
+    return serviceUnavailable();
   }
 }
 
@@ -55,7 +47,6 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { firstName, lastName, email, phone, subject, message } = body;
 
-    // Validate required fields
     if (!firstName || !lastName || !email || !subject || !message) {
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
@@ -63,7 +54,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
@@ -72,36 +62,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const submissions = await getSubmissions();
-    
-    const newSubmission: ContactSubmission = {
-      id: generateId(),
-      firstName,
-      lastName,
-      email,
-      phone: phone || undefined,
-      subject,
-      message,
-      status: 'new',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+    const supabase = createServiceClient();
+    const { data, error } = await supabase
+      .from('contact_submissions')
+      .insert({
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        phone: phone || null,
+        subject,
+        message,
+        status: 'new',
+      })
+      .select('*')
+      .single();
 
-    submissions.push(newSubmission);
-    await saveSubmissions(submissions);
+    if (error) {
+      console.error('Supabase contact insert error:', error);
+      return NextResponse.json(
+        { success: false, error: 'Failed to create submission' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json(
-      { success: true, data: newSubmission },
+      { success: true, data: rowToSubmission(data as ContactSubmissionRow) },
       { status: 201 }
     );
-  } catch (error) {
-    console.error('Error creating contact submission:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to create submission' },
-      { status: 500 }
-    );
+  } catch (e) {
+    console.error('Contact POST:', e);
+    return serviceUnavailable();
   }
 }
-
-
-
